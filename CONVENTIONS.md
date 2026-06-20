@@ -28,12 +28,30 @@
 2. From the portal repo: `npm run build` (icons + sync), then commit & push.
    Cloudflare Pages auto-deploys.
 
+## Deploy model
+
+Content is built **locally** (the sibling project repos only exist on the Mac,
+not on Cloudflare's build servers), committed, and pushed. Cloudflare serves the
+committed `public/` and auto-deploys on push.
+
+```bash
+npm run build            # icons + sync (reads ../*/portal.json)
+git add -A && git commit -m "update portal"
+git push                 # → Cloudflare auto-deploys
+```
+
+> ⚠️ On Cloudflare, leave the **build command empty**. Do NOT set it to
+> `npm run build` — that would run `sync` with no sibling repos present and wipe
+> the committed content.
+
 ## Hosting / auth setup (one-time)
 
-- Cloudflare Pages project connected to this repo; build command `npm run build`,
-  output dir `public`.
-- KV namespace bound as `PORTAL_KV` (id in `wrangler.toml`).
-- Env vars: `RP_ID`, `RP_ORIGIN`, `SESSION_SECRET`.
+- Cloudflare Pages project connected to this repo (production branch `main`);
+  **build command: empty**, build output directory: `public`.
+- KV namespace `portal` bound as `PORTAL_KV`.
+- Env vars: `RP_ID` (your domain, e.g. `portal.pages.dev` host), `RP_ORIGIN`
+  (full origin, e.g. `https://portal.pages.dev`), `SESSION_SECRET` (random 32+
+  bytes).
 - First visit → "Register this device" (Touch/Face ID). After that, opening the
   app prompts Face ID to unlock.
 

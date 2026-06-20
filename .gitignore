@@ -3,13 +3,6 @@ node_modules/
 .wrangler/
 .dev.vars
 
-# public/ holds generated build artifacts (manifest.json, icons/, copied <slug>/
-# outputs). Track only the source files; ignore everything else regardless of
-# slug name (a [a-z]* glob would miss digit-leading slugs like 100-hole-day).
-/public/*
-!/public/index.html
-!/public/login.html
-!/public/app.js
-!/public/sw.js
-!/public/manifest.webmanifest
-!/public/styles/
+# NOTE: public/ (manifest.json, icons/, copied <slug>/ outputs) is intentionally
+# TRACKED. Content is built locally with `npm run build` (sibling project repos
+# only exist on the Mac), committed, and pushed — Cloudflare auto-deploys it.

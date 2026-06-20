@@ -1,0 +1,18 @@
+{
+  "projects": [
+    {
+      "slug": "sabbatical",
+      "name": "Sabbatical",
+      "icon": "🏕️",
+      "group": "Travel",
+      "outputs": [
+        {
+          "slug": "road-trip-map",
+          "title": "Road Trip Map",
+          "icon": "🗺️",
+          "href": "sabbatical/road-trip-map/index.html"
+        }
+      ]
+    }
+  ]
+}
