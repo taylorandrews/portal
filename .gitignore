@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+.wrangler/
+# generated build artifacts
+public/manifest.json
+public/icons/
+public/[a-z]*/
+!public/styles/
