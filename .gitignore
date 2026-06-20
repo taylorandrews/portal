@@ -1,6 +1,7 @@
 node_modules/
 .DS_Store
 .wrangler/
+.dev.vars
 # generated build artifacts
 public/manifest.json
 public/icons/
