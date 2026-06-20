@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Cup 26 — Group Tracker</title>
+<meta name="description" content="2026 FIFA World Cup group-stage tracker: live standings, head-to-head matrices, full 48-team ranking, and a miniature live bracket.">
+<link rel="stylesheet" href="./src/css/styles.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>World Cup 26 <span class="ball">●</span></h1>
+    <div class="sub">Canada · Mexico · United States · 48 teams · 12 groups · 104 matches</div>
+    <div class="asof" id="asof"></div>
+    <div class="legend">
+      <span><i class="dot q"></i> Top 2 + 8 best 3rd advance to R32</span>
+      <span><i class="dot kc"></i> Match in Kansas City</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="upcoming"></div>
+  <div id="topsection"></div>
+  <h2 class="grid-title">The 12 groups</h2>
+  <div class="grid" id="grid"></div>
+  <div id="sections"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>Standings auto-computed from results.</span>
+    <span>To update: edit the <code>DATA</code> object and add a <code>score</code> to any match.</span>
+  </div>
+</footer>
+<script type="module" src="./src/js/main.js"></script>
+</body>
+</html>
