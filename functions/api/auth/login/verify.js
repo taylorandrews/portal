@@ -7,24 +7,35 @@ export async function onRequestPost({ request, env }) {
   const expectedChallenge = await env.PORTAL_KV.get("auth-challenge");
   const stored = await env.PORTAL_KV.get("credential", "json");
   if (!expectedChallenge || !stored) return new Response("Bad state", { status: 400 });
+  await env.PORTAL_KV.delete("auth-challenge"); // single-use: consume before verifying
 
-  const body = await request.json();
-  const verification = await verifyAuthenticationResponse({
-    response: body,
-    expectedChallenge,
-    expectedOrigin: env.RP_ORIGIN,
-    expectedRPID: env.RP_ID,
-    credential: {
-      id: stored.id,
-      publicKey: new Uint8Array(stored.publicKey),
-      counter: stored.counter,
-    },
-  });
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response("Bad request", { status: 400 });
+  }
+
+  let verification;
+  try {
+    verification = await verifyAuthenticationResponse({
+      response: body,
+      expectedChallenge,
+      expectedOrigin: env.RP_ORIGIN,
+      expectedRPID: env.RP_ID,
+      credential: {
+        id: stored.id,
+        publicKey: new Uint8Array(stored.publicKey),
+        counter: stored.counter,
+      },
+    });
+  } catch {
+    return new Response("Not verified", { status: 401 });
+  }
   if (!verification.verified) return new Response("Not verified", { status: 401 });
 
   stored.counter = verification.authenticationInfo.newCounter;
   await env.PORTAL_KV.put("credential", JSON.stringify(stored));
-  await env.PORTAL_KV.delete("auth-challenge");
 
   const token = await signSession(env.SESSION_SECRET, { ttlMs: SESSION_TTL_MS });
   return new Response(JSON.stringify({ verified: true }), {
