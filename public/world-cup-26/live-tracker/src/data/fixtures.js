@@ -4,7 +4,7 @@
    Leave score out (or null) for a fixture not yet played.
    kc:true  marks a Kansas City (Arrowhead) match.
    ============================================================ */
-export const AS_OF = "Updated June 19, 2026 — through June 18 matches";
+export const AS_OF = "Updated June 20, 2026 — through June 19 matches";
 
 export const DATA = [
  {g:"A", teams:{MEX:"Mexico", RSA:"South Africa", KOR:"South Korea", CZE:"Czechia"}, matches:[
@@ -26,16 +26,16 @@ export const DATA = [
  {g:"C", teams:{BRA:"Brazil", MAR:"Morocco", HAI:"Haiti", SCO:"Scotland"}, matches:[
    {md:"Jun 13", h:"BRA", a:"MAR", score:[1,1]},
    {md:"Jun 13", h:"SCO", a:"HAI", score:[1,0]},
-   {md:"Jun 19", h:"SCO", a:"MAR"},
-   {md:"Jun 19", h:"BRA", a:"HAI"},
+   {md:"Jun 19", h:"SCO", a:"MAR", score:[0,1]},
+   {md:"Jun 19", h:"BRA", a:"HAI", score:[3,0]},
    {md:"Jun 24", h:"SCO", a:"BRA"},
    {md:"Jun 24", h:"MAR", a:"HAI"},
  ]},
  {g:"D", teams:{USA:"United States", PAR:"Paraguay", AUS:"Australia", TUR:"Türkiye"}, tag:"USA's group", matches:[
    {md:"Jun 12", h:"USA", a:"PAR", score:[4,1]},
    {md:"Jun 13", h:"AUS", a:"TUR", score:[2,0]},
-   {md:"Jun 19", h:"USA", a:"AUS"},
-   {md:"Jun 19", h:"TUR", a:"PAR"},
+   {md:"Jun 19", h:"USA", a:"AUS", score:[2,0]},
+   {md:"Jun 19", h:"TUR", a:"PAR", score:[0,1]},
    {md:"Jun 25", h:"TUR", a:"USA"},
    {md:"Jun 25", h:"PAR", a:"AUS"},
  ]},
