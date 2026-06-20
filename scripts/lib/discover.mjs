@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 
 function validate(config) {
   if (typeof config?.name !== "string" || !config.name.trim()) return "missing 'name'";
@@ -7,6 +7,13 @@ function validate(config) {
   for (const o of config.outputs) {
     if (typeof o?.title !== "string" || !o.title.trim()) return "an output is missing 'title'";
     if (typeof o?.path !== "string" || !o.path.trim()) return "an output is missing 'path'";
+    // The whole directory containing the entry file is copied, so a root-level
+    // entry would copy the entire repo (incl. .git). Require a subdirectory and
+    // forbid path traversal.
+    if (o.path.startsWith("/") || o.path.split(/[\\/]/).includes(".."))
+      return `output '${o.title}' path must be a relative path without '..' (got '${o.path}')`;
+    if (dirname(o.path) === ".")
+      return `output '${o.title}' must live in a subdirectory, not the repo root (got '${o.path}')`;
   }
   return null;
 }

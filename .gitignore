@@ -2,8 +2,14 @@ node_modules/
 .DS_Store
 .wrangler/
 .dev.vars
-# generated build artifacts
-public/manifest.json
-public/icons/
-public/[a-z]*/
-!public/styles/
+
+# public/ holds generated build artifacts (manifest.json, icons/, copied <slug>/
+# outputs). Track only the source files; ignore everything else regardless of
+# slug name (a [a-z]* glob would miss digit-leading slugs like 100-hole-day).
+/public/*
+!/public/index.html
+!/public/login.html
+!/public/app.js
+!/public/sw.js
+!/public/manifest.webmanifest
+!/public/styles/

@@ -20,7 +20,10 @@
 - `group` — section label on the landing page (defaults to "Other").
 - `outputs[].path` — repo-relative path to the entry HTML. The **whole folder**
   containing it is copied, so keep each output self-contained with **relative**
-  asset paths.
+  asset paths. The entry **must live in a dedicated subdirectory** (e.g.
+  `output/index.html`), never at the repo root — sync copies the entry's folder,
+  so a root-level entry would copy the entire repo (including `.git`). Outputs
+  with a root-level path or a `..` in the path are skipped with a warning.
 
 2. From the portal repo: `npm run build` (icons + sync), then commit & push.
    Cloudflare Pages auto-deploys.

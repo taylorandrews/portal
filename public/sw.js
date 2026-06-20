@@ -1,5 +1,7 @@
 const CACHE = "portal-v1";
-const SHELL = ["/", "/index.html", "/app.js", "/styles/tokens.css", "/styles/app.css"];
+// Precache static assets only — NOT navigations like "/" (which may be the login
+// redirect when logged out).
+const SHELL = ["/app.js", "/styles/tokens.css", "/styles/app.css"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -13,9 +15,12 @@ self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET" || url.pathname.startsWith("/api/")) return;
   e.respondWith(
     fetch(e.request).then((res) => {
-      const copy = res.clone();
-      caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
+      // Cache only successful same-origin responses (never a 302→login redirect).
+      if (res.ok && res.type === "basic") {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
+      }
       return res;
-    }).catch(() => caches.match(e.request).then((m) => m || caches.match("/")))
+    }).catch(() => caches.match(e.request))
   );
 });

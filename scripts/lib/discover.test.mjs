@@ -27,3 +27,14 @@ test("discovers valid projects and skips invalid ones", () => {
   assert.equal(warnings.length, 2); // b invalid json, c missing outputs
   rmSync(root, { recursive: true, force: true });
 });
+
+test("rejects root-level entry paths and path traversal", () => {
+  const { root, mk } = setup();
+  mk("rootentry", JSON.stringify({ name: "R", outputs: [{ title: "X", path: "index.html" }] }));
+  mk("traversal", JSON.stringify({ name: "T", outputs: [{ title: "Y", path: "../secret/i.html" }] }));
+  mk("ok", JSON.stringify({ name: "OK", outputs: [{ title: "Z", path: "out/i.html" }] }));
+  const { projects, warnings } = discoverProjects(root);
+  assert.deepEqual(projects.map((p) => p.config.name), ["OK"]);
+  assert.equal(warnings.length, 2);
+  rmSync(root, { recursive: true, force: true });
+});

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { cpSync, rmSync, mkdirSync, writeFileSync, existsSync, readdirSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { discoverProjects } from "./lib/discover.mjs";
 import { buildManifest } from "./lib/manifest.mjs";
@@ -29,7 +29,13 @@ const { manifest, copies } = buildManifest(projects);
 mkdirSync(publicDir, { recursive: true });
 wipeGeneratedOutputs();
 
+const projectsRoot = projectsDir + sep;
 for (const { from, to } of copies) {
+  // Defense in depth: never copy from outside the projects tree.
+  if (!resolve(from).startsWith(projectsRoot)) {
+    console.warn("⚠  output dir escapes projects root, skipped:", from);
+    continue;
+  }
   if (!existsSync(from)) {
     console.warn("⚠  missing output dir, skipped:", from);
     continue;

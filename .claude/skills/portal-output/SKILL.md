@@ -9,7 +9,10 @@ When you produce a viewable artifact (HTML page, infographic, dashboard):
 
 1. **Make it self-contained.** All assets (CSS/JS/images) live alongside the
    entry HTML and are referenced with **relative** paths. No absolute `/...`
-   paths, no localhost-only dependencies.
+   paths, no localhost-only dependencies. Put the output in a **dedicated
+   subdirectory** (e.g. `output/index.html`), never at the repo root — sync
+   copies the entry's whole folder, so a root-level entry would copy the entire
+   repo. Root-level or `..` paths are rejected by sync.
 
 2. **Register it.** Create or update `portal.json` in the project repo root:
 
