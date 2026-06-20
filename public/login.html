@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ff5a36" />
+  <title>Unlock · TA Portal</title>
+  <link rel="stylesheet" href="/styles/tokens.css" />
+  <style>
+    body { margin:0; min-height:100vh; display:grid; place-items:center;
+      font-family:var(--font); background:var(--bg); color:var(--ink); }
+    .card { text-align:center; }
+    .monogram { display:grid; place-items:center; width:88px; height:88px; margin:0 auto var(--s5);
+      background:var(--accent); color:#fff; border-radius:24px; font-weight:800; font-size:36px; letter-spacing:-.04em; }
+    button { font:inherit; font-weight:600; color:#fff; background:var(--accent);
+      border:0; border-radius:12px; padding:14px 28px; }
+    button:active { background:var(--accent-press); }
+    .msg { color:var(--ink-2); margin-top:var(--s4); min-height:1.2em; font-size:14px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="monogram">TA</div>
+    <button id="go">Unlock</button>
+    <button id="register" hidden>Register this device</button>
+    <p class="msg" id="msg"></p>
+  </div>
+  <script type="module">
+    import { startRegistration, startAuthentication }
+      from "https://esm.sh/@simplewebauthn/browser@13";
+    const msg = document.getElementById("msg");
+    const go = document.getElementById("go");
+    const reg = document.getElementById("register");
+
+    async function unlock() {
+      msg.textContent = "Waiting for Face ID…";
+      const opt = await fetch("/api/auth/login/options");
+      if (opt.status === 404) { go.hidden = true; reg.hidden = false; msg.textContent = "Set up this device to begin."; return; }
+      const resp = await startAuthentication({ optionsJSON: await opt.json() });
+      const v = await fetch("/api/auth/login/verify", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(resp) });
+      if (v.ok) location.href = "/"; else msg.textContent = "Unlock failed. Try again.";
+    }
+    async function register() {
+      msg.textContent = "Registering…";
+      const opt = await fetch("/api/auth/register/options");
+      if (opt.status === 403) { msg.textContent = "Already registered."; return; }
+      const resp = await startRegistration({ optionsJSON: await opt.json() });
+      const v = await fetch("/api/auth/register/verify", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(resp) });
+      if (v.ok) { reg.hidden = true; go.hidden = false; await unlock(); }
+      else msg.textContent = "Registration failed.";
+    }
+    go.addEventListener("click", unlock);
+    reg.addEventListener("click", register);
+    unlock(); // auto-prompt on open
+  </script>
+</body>
+</html>
