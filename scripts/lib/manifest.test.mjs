@@ -29,6 +29,16 @@ test("builds manifest entries and copy plan", () => {
   ]);
 });
 
+test("dedupes colliding project slugs across projects", () => {
+  const { manifest } = buildManifest([
+    { dir: "/p/a", config: { name: "Trip", outputs: [{ title: "Home", path: "i.html" }] } },
+    { dir: "/p/b", config: { name: "Trip", outputs: [{ title: "Home", path: "i.html" }] } },
+  ]);
+  assert.deepEqual(manifest.projects.map((p) => p.slug), ["trip", "trip-2"]);
+  // hrefs must reflect the deduped project slug so copies don't collide
+  assert.equal(manifest.projects[1].outputs[0].href, "trip-2/home/i.html");
+});
+
 test("dedupes colliding output slugs within a project", () => {
   const { manifest } = buildManifest([{
     dir: "/p/x",
