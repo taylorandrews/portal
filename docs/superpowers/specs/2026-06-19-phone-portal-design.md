@@ -128,7 +128,35 @@ setup may involve an email step.
 > credential storage via KV, cookie signing) to be confirmed during
 > implementation rather than assumed here.
 
-### 5. Convention docs + skill
+### 5. Branding & visual identity (first-class)
+
+The portal must feel like one cohesive, personalized app — not a directory of
+mismatched links. Branding applies to the app shell (home-screen icon, landing
+page, project tiles), while individual project outputs keep their own internal
+style.
+
+- **App identity:** a custom "TA" (Taylor Andrews) monogram mark. Aesthetic:
+  **Apple-esque** — clean, restrained, generous whitespace, rounded-square app
+  icon, a single confident accent color, system-feeling typography (SF / system
+  UI stack).
+- **FiveThirtyEight influence, tamed:** borrow 538's polish — clear type
+  hierarchy, a tasteful editorial accent palette, crisp tile cards — but
+  **without the data-nerdy** look (no gridlines, axis ticks, or dense
+  chart-junk in the shell).
+- **App icon:** the TA monogram as a rounded-square home-screen icon, exported at
+  all required PWA/iOS sizes; matching favicon and theme color.
+- **Consistent project icons:** every project gets one **consistent icon
+  treatment** so the grid looks unified — same shape language, same sizing, same
+  background/padding rules — even though each project's own output may look
+  totally different inside. Emoji-in-a-branded-tile is the zero-effort default;
+  custom mark optional per project.
+- **Design tokens:** colors, radii, spacing, and type defined once (CSS custom
+  properties) and reused across the shell so everything stays consistent.
+
+A short brand mockup pass (icon + landing grid) happens during implementation
+before the grid is finalized.
+
+### 6. Convention docs + skill
 
 - `CONVENTIONS.md` in this repo: the `portal.json` schema, the self-contained
   static-output requirement, and how to run sync.
