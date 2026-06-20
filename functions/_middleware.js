@@ -1,7 +1,9 @@
 import { verifySession } from "./lib/session.js";
 
-// Exact public files (no prefix matching, so /login.html.evil stays gated).
-const PUBLIC_EXACT = new Set(["/login.html", "/manifest.webmanifest"]);
+// Exact public paths (no prefix matching, so /login.html.evil stays gated).
+// Cloudflare Pages serves clean URLs (it 308-redirects /login.html -> /login),
+// so both forms must be allowed or the login redirect loops.
+const PUBLIC_EXACT = new Set(["/login", "/login.html", "/manifest.webmanifest"]);
 // Public directory/API prefixes (trailing slash required).
 const PUBLIC_PREFIXES = ["/api/auth/", "/styles/", "/icons/"];
 
@@ -25,5 +27,5 @@ export async function onRequest(context) {
   if (token && (await verifySession(env.SESSION_SECRET, token))) {
     return next();
   }
-  return Response.redirect(new URL("/login.html", request.url).toString(), 302);
+  return Response.redirect(new URL("/login", request.url).toString(), 302);
 }
