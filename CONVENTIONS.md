@@ -48,10 +48,13 @@ git push                 # → Cloudflare auto-deploys
 
 - Cloudflare Pages project connected to this repo (production branch `main`);
   **build command: empty**, build output directory: `public`.
-- KV namespace `portal` bound as `PORTAL_KV`.
-- Env vars: `RP_ID` (your domain, e.g. `portal.pages.dev` host), `RP_ORIGIN`
-  (full origin, e.g. `https://portal.pages.dev`), `SESSION_SECRET` (random 32+
-  bytes).
+- Configure these in the Pages dashboard (no `wrangler.toml`):
+  - **Functions → KV namespace bindings:** `PORTAL_KV` → the `portal` namespace.
+  - **Functions → Compatibility flags:** `nodejs_compat` (and a compatibility
+    date of 2024-09-23 or later).
+  - **Environment variables:** `RP_ID` (host only, e.g. `portal.pages.dev`),
+    `RP_ORIGIN` (full origin, e.g. `https://portal.pages.dev`), `SESSION_SECRET`
+    (random 32+ bytes).
 - First visit → "Register this device" (Touch/Face ID). After that, opening the
   app prompts Face ID to unlock.
 
@@ -59,5 +62,6 @@ git push                 # → Cloudflare auto-deploys
 
 ```bash
 echo -e "RP_ID=localhost\nRP_ORIGIN=http://localhost:8788\nSESSION_SECRET=dev-secret" > .dev.vars
-npm run build && npm run dev   # wrangler pages dev on :8788
+npm run build
+npx wrangler pages dev public --kv PORTAL_KV --compatibility-flag nodejs_compat
 ```
