@@ -1,0 +1,8 @@
+node_modules/
+.DS_Store
+.wrangler/
+.dev.vars
+
+# NOTE: public/ (manifest.json, icons/, copied <slug>/ outputs) is intentionally
+# TRACKED. Content is built locally with `npm run build` (sibling project repos
+# only exist on the Mac), committed, and pushed — Cloudflare auto-deploys it.

@@ -1,0 +1,20 @@
+{
+  "name": "portal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync.mjs",
+    "icons": "node scripts/gen-icons.mjs",
+    "build": "npm run icons && npm run sync",
+    "test": "node --test",
+    "dev": "wrangler pages dev public"
+  },
+  "dependencies": {
+    "@simplewebauthn/server": "^13.0.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.0",
+    "wrangler": "^3.0.0"
+  }
+}
