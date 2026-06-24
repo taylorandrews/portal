@@ -76,7 +76,8 @@
   .up-day.today{border-color:var(--gold);box-shadow:0 3px 12px rgba(232,181,60,.22)}
   .up-day.today .up-day-h{background:var(--gold);color:var(--green-deep)}
   .up-day.today .up-day-h .date{color:var(--green-deep);opacity:.7}
-  .up-m{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #f4f1e8}
+  .up-m{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #f4f1e8;
+    flex-wrap:wrap}
   .up-m:last-child{border-bottom:none}
   .up-m.done{background:#fafdfb}
   .up-gp{flex:none;width:17px;height:17px;border-radius:4px;display:grid;place-items:center;
@@ -88,6 +89,8 @@
   .up-vs{flex:none;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
   .up-kc{flex:none;font-size:8px;background:var(--gold);color:var(--green-deep);
     font-weight:800;border-radius:3px;padding:1px 4px;letter-spacing:.5px}
+  .up-meta{width:100%;font-size:9px;color:var(--muted);white-space:nowrap;letter-spacing:.3px;
+    padding-left:25px;margin-top:-3px}
   .up-empty{padding:14px;color:var(--muted);font-size:13px;background:#fff;
     border:1px solid #e3ddcc;border-radius:10px}
   .grid{

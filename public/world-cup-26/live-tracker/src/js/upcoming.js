@@ -34,7 +34,8 @@ function flattenMatches(){
     const d = parseMd(m.md);
     all.push({
       d, key: dayKey(d), g: g.g, hn: g.teams[m.h], an: g.teams[m.a],
-      h: m.h, a: m.a, score: m.score, kc: m.kc, md: m.md
+      h: m.h, a: m.a, score: m.score, kc: m.kc, md: m.md,
+      t: m.t, v: m.v
     });
   }));
   return all;
@@ -46,12 +47,18 @@ function matchRow(m){
     ? `<span class="up-sc">${m.score[0]}–${m.score[1]}</span>`
     : `<span class="up-vs">v</span>`;
   const done = m.score ? ' done' : '';
+  const meta = [];
+  if(m.t) meta.push(m.t + ' CT');
+  if(m.v) meta.push(m.v);
+  const metaHtml = meta.length
+    ? `<span class="up-meta">${meta.join(' · ')}</span>`
+    : '';
   return `<div class="up-m${done}">
     <span class="up-gp" style="background:var(--g${m.g}0)">${m.g}</span>
     <span class="up-teams">
       <span class="up-tn">${m.hn}</span>${mid}<span class="up-tn">${m.an}</span>
     </span>
-    ${kc}
+    ${kc}${metaHtml}
   </div>`;
 }
 
