@@ -11,20 +11,12 @@
           "title": "Road Trip Map",
           "icon": "🗺️",
           "href": "sabbatical/road-trip-map/index.html"
-        }
-      ]
-    },
-    {
-      "slug": "world-cup-26",
-      "name": "World Cup 26",
-      "icon": "⚽",
-      "group": "World Cup",
-      "outputs": [
+        },
         {
-          "slug": "live-tracker",
-          "title": "Live Tracker",
-          "icon": "⚽",
-          "href": "world-cup-26/live-tracker/index.html"
+          "slug": "road-trip-mobile",
+          "title": "Road Trip Mobile",
+          "icon": "🥏",
+          "href": "sabbatical/road-trip-mobile/index.html"
         }
       ]
     }
