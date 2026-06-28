@@ -1,6 +1,6 @@
 {
   "trip_name": "KC → Detroit Disc Golf Leg (Sabbatical 2026)",
-  "description": "The ~9-day disc golf drive from Kansas City to the Detroit area for Worlds (spectating), Aug 17-31, 2026, in a truck camper. Drive east Aug 17-24 hitting top courses in travel order, then basecamp at Proud Lake Recreation Area Aug 24-31 while spectating Worlds. Stops are in travel order; edit and re-run build_route.py to reroute.",
+  "description": "The disc golf drive from Kansas City to the Detroit area for Worlds (spectating), Aug 17-25, 2026, in a truck camper. Drive east hitting top courses in travel order with the booked campground each night, then basecamp at Proud Lake Recreation Area Aug 24-31 while spectating Worlds. Stops are in travel order; edit and re-run build_route.py to reroute.",
   "stops": [
     {
       "name": "Kansas City, MO",
@@ -19,20 +19,44 @@
       "notes": "Columbia, MO · World #25 / US #12 / MO #2"
     },
     {
-      "name": "Championship Course at Eagles Crossing",
+      "name": "Finger Lakes SP",
+      "lat": 38.9933,
+      "lon": -92.2369,
+      "type": "overnight",
+      "day": "8/17",
+      "notes": "Columbia, MO · Site 17 · 1 night · conf 3828322"
+    },
+    {
+      "name": "Eagles Crossing",
       "lat": 38.978376,
       "lon": -91.23793,
       "type": "course",
       "day": "8/18",
-      "notes": "New Truxton, MO · World #9 / US #4 / MO #1 · play both courses here (also Wild Times, MO #3)"
+      "notes": "New Truxton, MO · World #9 / US #4 / MO #1 · 12 PM tee · play both courses (also Wild Times, MO #3)"
     },
     {
-      "name": "BC3 Disc Golf Course",
+      "name": "Walnut Point SP",
+      "lat": 39.6361,
+      "lon": -88.0381,
+      "type": "overnight",
+      "day": "8/18",
+      "notes": "Oakland, IL · Fox Squirrel Site 1 · 1 night · conf 68096"
+    },
+    {
+      "name": "BC3",
       "lat": 39.207242,
       "lon": -86.246947,
       "type": "course",
       "day": "8/19",
-      "notes": "Nashville, IN · World #92 / US #64 / IN #1 · long drive across IL/IN"
+      "notes": "Nashville, IN · World #92 / US #64 / IN #1"
+    },
+    {
+      "name": "Versailles SP",
+      "lat": 39.0739,
+      "lon": -85.2336,
+      "type": "overnight",
+      "day": "8/19",
+      "notes": "Versailles, IN · Loop B Site 120 · 1 night · conf 2-39907318"
     },
     {
       "name": "Idlewild",
@@ -40,18 +64,34 @@
       "lon": -84.733471,
       "type": "course",
       "day": "8/20",
-      "notes": "Burlington, KY (Cincinnati) · World #22 / US #11"
+      "notes": "Burlington, KY (Cincinnati) · World #22 / US #11 · Reds game in the evening"
     },
     {
-      "name": "Lake Michigan overnight — Valparaiso / Crown Point, IN",
-      "lat": 41.467255,
-      "lon": -87.060449,
+      "name": "Indiana Dunes SP",
+      "lat": 41.6606,
+      "lon": -87.0526,
+      "type": "overnight",
+      "day": "8/20",
+      "notes": "Chesterton, IN · Site 8 · 1 night · conf 2-39907952"
+    },
+    {
+      "name": "Rogers Lakewood Park",
+      "lat": 41.4886,
+      "lon": -87.0467,
+      "type": "course",
+      "day": "8/21",
+      "notes": "Valparaiso, IN · IN #5"
+    },
+    {
+      "name": "Van Buren SP",
+      "lat": 42.3489,
+      "lon": -86.3036,
       "type": "overnight",
       "day": "8/21",
-      "notes": "Overnight in the camper en route from Cincinnati up to west Michigan."
+      "notes": "South Haven, MI · Site 209 · 1 night · conf INMI26-4385520B1"
     },
     {
-      "name": "Arvesta Sport Complex",
+      "name": "Arvesta",
       "lat": 42.403087,
       "lon": -86.273641,
       "type": "course",
@@ -59,12 +99,20 @@
       "notes": "South Haven, MI · World #78 / US #52 / MI #4 · up the lakeshore"
     },
     {
-      "name": "Flip City Disc Golf Park",
+      "name": "Holland SP",
+      "lat": 42.7772,
+      "lon": -86.2042,
+      "type": "overnight",
+      "day": "8/22-8/24",
+      "notes": "Holland, MI · Site 129 · 2 nights (8/22-8/24) · conf INMI26-4385155B1 · day-trip to Flip City on 8/23"
+    },
+    {
+      "name": "Flip City",
       "lat": 43.608619,
       "lon": -86.363963,
       "type": "course",
       "day": "8/23",
-      "notes": "Shelby, MI · World #35 / US #20 / MI #1"
+      "notes": "Shelby, MI · World #35 / US #20 / MI #1 · day trip from Holland"
     },
     {
       "name": "Kensington Toboggan",
@@ -75,7 +123,7 @@
       "notes": "Milford Twp, MI · World #63 / US #40 / MI #2 · Worlds venue area · round confirmed Mon 8/24 5:40 PM · spectate 8/26-8/30"
     },
     {
-      "name": "Proud Lake Recreation Area — campsite (basecamp)",
+      "name": "Proud Lake",
       "lat": 42.560008,
       "lon": -83.529593,
       "type": "end",
