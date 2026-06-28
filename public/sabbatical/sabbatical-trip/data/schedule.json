@@ -64,8 +64,9 @@
     { "date": "2026-08-24", "phase": "dg-leg", "rounds": 1, "title": "Kensington Toboggan (5:40 tee)", "location": "Holland SP → Kensington Toboggan (5:40) → Proud Lake",
       "course": { "name": "Kensington Toboggan", "ranks": "🌎63 · 🇺🇸40 · MI 2 · 5:40 PM tee", "udisc_url": "https://udisc.com/courses/kensington-toboggan-7NWQ" },
       "stay": { "status": "booked", "name": "Proud Lake Rec Area", "site": "Site 68", "where": "Commerce Twp, MI · basecamp · check in 3 PM · conf INMI26-3900592B1", "lat": 42.560008, "lon": -83.529593 } },
-    { "date": "2026-08-25", "phase": "dg-leg", "rounds": 0, "title": "Settle in at Proud Lake", "location": "Proud Lake — settle in / Worlds prep",
-      "stay": { "status": "booked", "name": "Proud Lake Rec Area", "site": "Site 68", "where": "Commerce Twp, MI · basecamp · conf INMI26-3900592B1", "lat": 42.560008, "lon": -83.529593 } },
+    { "date": "2026-08-25", "phase": "dg-leg", "rounds": 0, "title": "Settle in → Tigers game (6:40 PM)", "location": "Proud Lake basecamp → Comerica Park (Detroit)",
+      "stay": { "status": "booked", "name": "Proud Lake Rec Area", "site": "Site 68", "where": "Commerce Twp, MI · basecamp · conf INMI26-3900592B1", "lat": 42.560008, "lon": -83.529593 },
+      "locked": ["⚾ Tigers vs Rays — Comerica Park, Tue 8/25 6:40 PM · Sec 133, Row 8, Seat 3 · Parking Lot N (2055 Cass Ave) · conf TGEV-5127033-71542219"] },
 
     { "date": "2026-08-26", "phase": "worlds", "rounds": 0, "title": "Worlds — Day 1", "location": "Worlds — Day 1 (spectate) · Proud Lake basecamp",
       "stay": { "status": "booked", "name": "Proud Lake Rec Area", "site": "Site 68", "where": "Commerce Twp, MI · basecamp · conf INMI26-3900592B1", "lat": 42.560008, "lon": -83.529593 } },

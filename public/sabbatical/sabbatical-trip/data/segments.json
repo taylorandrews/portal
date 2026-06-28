@@ -66,6 +66,10 @@
       { "name": "Kensington Toboggan", "lat": 42.540607, "lon": -83.644784, "play": true, "note": "Milford Twp, MI · Worlds venue · MI #2 · 5:40 PM tee" },
       { "name": "Proud Lake", "lat": 42.560008, "lon": -83.529593, "camp": true, "note": "Commerce Twp, MI · Site 68 · Worlds basecamp, Aug 24–31 · conf INMI26-3900592B1" }
     ]},
+    { "date": "2026-08-25", "label": "Proud Lake → Comerica Park (Tigers game)", "waypoints": [
+      { "name": "Proud Lake", "lat": 42.560008, "lon": -83.529593 },
+      { "name": "Comerica Park", "lat": 42.3390, "lon": -83.0485, "note": "Detroit · Tigers vs Rays 6:40 PM · Sec 133 · Lot N parking (2055 Cass Ave)" }
+    ]},
 
     { "date": "2026-08-31", "label": "Proud Lake → Iowa City", "waypoints": [
       { "name": "Proud Lake", "lat": 42.560008, "lon": -83.529593 },
