@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Sabbatical 2026</title>
+  <link rel="stylesheet" href="leaflet.css">
+  <script src="leaflet.js"></script>
+  <style>
+    :root {
+      --bg: #11151f; --card: #1b2130; --card2: #232b3d; --ink: #eef1f7; --muted: #98a1b5;
+      --line: #2c3344; --route: #ff5e3a; --route-hot: #ff8a5c; --gold: #ffc24b; --ok: #28e0c8;
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html, body { height: 100%; background: var(--bg); color: var(--ink);
+      font: 15px/1.4 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased; overflow: hidden; }
+
+    .shell { display: flex; flex-direction: column; height: 100%;
+      padding-top: var(--safe-t); padding-bottom: var(--safe-b); }
+
+    header { flex: none; padding: 14px 16px 0; }
+    header h1 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+    .meta { display: flex; gap: 10px; align-items: center; margin-top: 4px;
+      font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
+    .meta .stat { background: var(--card); border-radius: 6px; padding: 2px 8px; }
+
+    .tabs { flex: none; display: flex; margin: 12px 16px 0; border-radius: 10px;
+      background: var(--card); overflow: hidden; border: 1px solid var(--line); }
+    .tabs button { flex: 1; border: 0; background: transparent; color: var(--muted);
+      font: inherit; font-size: 14px; font-weight: 600; padding: 10px 0;
+      cursor: pointer; transition: all .15s; -webkit-tap-highlight-color: transparent; }
+    .tabs button.on { background: var(--route); color: #fff; }
+
+    #schedule { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      padding: 10px 16px 32px; display: flex; flex-direction: column; gap: 8px; }
+    #schedule.hidden { display: none; }
+
+    .phase-hdr { font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .8px; padding: 16px 0 4px; display: flex;
+      align-items: center; gap: 8px; flex-shrink: 0; }
+    .phase-hdr .bar { flex: 1; height: 1px; }
+
+    .day { background: var(--card); border-radius: 14px; border: 1px solid var(--line);
+      overflow: hidden; transition: border-color .15s; flex-shrink: 0; }
+    .day.today { border-color: var(--ok); box-shadow: 0 0 0 1px var(--ok); }
+
+    .day-top { display: flex; align-items: flex-start; padding: 14px 16px;
+      gap: 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .day-top:active { background: rgba(255,255,255,.04); }
+
+    .date-badge { flex: none; text-align: center; min-width: 46px; padding-top: 2px; }
+    .date-badge .mon { font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .5px; color: var(--muted); }
+    .date-badge .dom { font-size: 27px; font-weight: 800; line-height: 1.1; }
+    .date-badge .dow { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    .day-body { flex: 1; min-width: 0; padding-top: 2px; }
+    .day-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
+    .day-title .today-tag { font-size: 11px; font-weight: 700; color: var(--ok);
+      background: rgba(40,224,200,.14); border-radius: 5px; padding: 1px 6px; margin-left: 6px;
+      vertical-align: middle; }
+    .day-route { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+    .day-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .chip { font-size: 12.5px; padding: 3px 10px; border-radius: 7px;
+      background: rgba(255,255,255,.07); white-space: nowrap; }
+    .chip.drive { color: var(--route-hot); }
+    .chip.course { color: #5bbf73; }
+    .chip.flight { color: #6b9fff; }
+    .chip.stay { color: var(--gold); }
+
+    .caret { flex: none; color: var(--muted); font-size: 13px; padding-top: 6px;
+      transition: transform .15s; }
+    .day.open .caret { transform: rotate(90deg); }
+
+    .day-detail { display: none; padding: 0 16px 16px; }
+    .day.open .day-detail { display: block; }
+
+    .sec { background: #0e121b; border-radius: 10px; padding: 11px 13px; margin-top: 8px; }
+    .sec-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px;
+      color: var(--muted); margin-bottom: 6px; }
+    .course-row + .course-row { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+    .course-name { font-size: 15px; font-weight: 700; }
+    .course-ranks { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+    .udisc { display: inline-block; margin-top: 6px; font-size: 12.5px; font-weight: 600;
+      color: var(--ok); background: rgba(40,224,200,.12); border: 1px solid rgba(40,224,200,.3);
+      border-radius: 7px; padding: 4px 10px; text-decoration: none; }
+
+    .stay-name { font-size: 15px; font-weight: 700; display: flex; flex-wrap: wrap;
+      align-items: center; gap: 8px; }
+    .stay-site { font-size: 12px; font-weight: 700; color: var(--gold);
+      background: rgba(255,194,75,.14); border: 1px solid rgba(255,194,75,.4);
+      border-radius: 6px; padding: 1px 8px; }
+    .stay-where { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .stay-idea { font-size: 13.5px; color: var(--muted); }
+    .directions { display: inline-block; margin-top: 9px; font-size: 13.5px; font-weight: 600;
+      color: #fff; background: var(--route); border-radius: 9px; padding: 9px 16px;
+      text-decoration: none; -webkit-tap-highlight-color: transparent; }
+
+    .locked-item { color: var(--gold); font-size: 13px; margin-top: 8px; }
+    .show-map { display: inline-block; margin-top: 12px; color: var(--ink);
+      background: var(--card2); border: 1px solid var(--line); border-radius: 9px;
+      padding: 9px 16px; font: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+    /* map */
+    #mapwrap { flex: 1; position: relative; display: none; }
+    #mapwrap.on { display: block; }
+    #mapview { position: absolute; inset: 0; background: var(--bg); }
+    .leaflet-tile { filter: brightness(1.22) saturate(1.05); }
+    .basket svg, .camp svg { display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,.7)); }
+    .place-label { background: transparent !important; border: 0 !important;
+      box-shadow: none !important; color: #c8d0e0; font-size: 11px;
+      font-weight: 600; text-shadow: 0 1px 3px #000, 0 0 3px #000; }
+    .leaflet-tooltip.tip { background: var(--card); color: var(--ink);
+      border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+      font-size: 13px; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+    .leaflet-tooltip.tip::before { display: none; }
+    .map-card { position: absolute; bottom: 16px; left: 12px; right: 12px;
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 14px 16px; z-index: 800; display: none;
+      box-shadow: 0 8px 28px rgba(0,0,0,.5); }
+    .map-card.on { display: block; }
+    .map-card .mc-title { font-size: 15px; font-weight: 700; }
+    .map-card .mc-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .map-card .mc-close { position: absolute; top: 8px; right: 12px;
+      background: none; border: 0; color: var(--muted); font-size: 22px; cursor: pointer; padding: 4px; }
+    .map-legend { position: absolute; top: 10px; left: 10px; z-index: 800;
+      background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+      padding: 8px 10px; display: flex; flex-wrap: wrap; gap: 4px 10px; max-width: 72vw; }
+    .map-legend .lg { display: flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--muted); }
+    .map-legend .lg .dot { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <h1>Sabbatical 2026 🥏</h1>
+    <div class="meta">
+      <span>Aug 8 – Sep 7</span>
+      <span class="stat" id="stats"></span>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="on" data-tab="schedule">Schedule</button>
+    <button data-tab="map">Map</button>
+  </div>
+
+  <div id="schedule"></div>
+
+  <div id="mapwrap">
+    <div id="mapview"></div>
+    <div class="map-legend" id="legend"></div>
+    <div class="map-card" id="mapcard">
+      <button class="mc-close">&times;</button>
+      <div class="mc-title"></div>
+      <div class="mc-sub"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const TODAY = (() => { const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })();
+
+let leafletMap, driveByDate = {}, allBounds = [], selectedDate = null;
+const DEF = { color: "#ff5e3a", weight: 3, opacity: 0.4 };
+const HOT = { color: "#ff8a5c", weight: 6, opacity: 1 };
+
+document.querySelector(".tabs").addEventListener("click", e => {
+  const btn = e.target.closest("button"); if (!btn) return;
+  document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("on"));
+  btn.classList.add("on");
+  const tab = btn.dataset.tab;
+  document.getElementById("schedule").classList.toggle("hidden", tab !== "schedule");
+  document.getElementById("mapwrap").classList.toggle("on", tab === "map");
+  if (tab === "map") requestAnimationFrame(() => { leafletMap ? leafletMap.invalidateSize() : initMap(); });
+});
+
+Promise.all([
+  fetch("data/schedule.json").then(r => r.json()),
+  fetch("data/route_segments.geojson").then(r => r.json()),
+]).then(([schedule, geo]) => {
+  window._schedule = schedule; window._geo = geo;
+  renderSchedule(schedule, geo);
+  renderStats(schedule, geo);
+  const today = document.querySelector(".day.today");
+  if (today) setTimeout(() => today.scrollIntoView({ block: "center" }), 60);
+}).catch(e => {
+  document.getElementById("schedule").innerHTML =
+    `<p style="color:var(--muted);padding:20px">Couldn't load trip data.</p>`;
+  console.error(e);
+});
+
+function esc(s){ const d=document.createElement("div"); d.textContent = s==null?"":s; return d.innerHTML; }
+
+function renderStats(s, geo) {
+  const rounds = s.days.reduce((n, d) => n + (d.rounds || 0), 0);
+  const drives = geo.features.filter(f => f.properties.kind === "drive");
+  const miles = Math.round(drives.reduce((n, f) => n + (f.properties.miles || 0), 0));
+  document.getElementById("stats").textContent =
+    `${s.days.length} days · ${rounds} rounds · ${miles.toLocaleString()} mi`;
+}
+
+function mapsUrl(stay){ return `https://www.google.com/maps/search/?api=1&query=${stay.lat},${stay.lon}`; }
+
+function courseSection(day) {
+  const cs = [day.course, day.course2].filter(c => c && c.name && !c.name.startsWith("("));
+  if (!cs.length) return "";
+  const rows = cs.map(c => `<div class="course-row">
+      <div class="course-name">${esc(c.name)}</div>
+      ${c.ranks ? `<div class="course-ranks">${esc(c.ranks)}</div>` : ""}
+      ${c.udisc_url ? `<a class="udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>` : ""}
+    </div>`).join("");
+  return `<div class="sec"><div class="sec-label">Disc Golf</div>${rows}</div>`;
+}
+
+function staySection(day) {
+  const s = day.stay; if (!s) return "";
+  if (s.status === "idea")
+    return `<div class="sec"><div class="sec-label">Stay</div>
+      <div class="stay-idea">💡 ${esc(s.note || s.where || "")}</div></div>`;
+  const site = s.site ? `<span class="stay-site">${esc(s.site)}</span>` : "";
+  const dir = (s.lat != null && s.lon != null)
+    ? `<a class="directions" href="${mapsUrl(s)}" target="_blank" rel="noopener">📍 Directions</a>` : "";
+  return `<div class="sec"><div class="sec-label">Stay</div>
+    <div class="stay-name">🏕️ ${esc(s.name)}${site}</div>
+    ${s.where ? `<div class="stay-where">${esc(s.where)}</div>` : ""}
+    ${dir}</div>`;
+}
+
+function renderSchedule(schedule, geo) {
+  const driveInfo = {};
+  geo.features.filter(f => f.properties.kind === "drive").forEach(f => driveInfo[f.properties.date] = f.properties);
+
+  let html = "", curPhase = null;
+  schedule.days.forEach(day => {
+    if (day.phase !== curPhase) {
+      curPhase = day.phase; const ph = schedule.phases[curPhase];
+      html += `<div class="phase-hdr"><span style="color:${ph.color}">${ph.label}</span>
+        <span class="bar" style="background:${ph.color}"></span></div>`;
+    }
+    const dt = new Date(day.date + "T12:00:00");
+    const drv = driveInfo[day.date];
+    const ph = schedule.phases[day.phase];
+    const isToday = day.date === TODAY;
+
+    let chips = "";
+    if (drv) chips += `<span class="chip drive">🚗 ${drv.miles} mi · ${drv.hours} hr</span>`;
+    [day.course, day.course2].filter(c => c && c.name && !c.name.startsWith("(")).forEach(c =>
+      chips += `<span class="chip course">🥏 ${esc(c.name)}</span>`);
+    if (day.flight) chips += `<span class="chip flight">✈️ ${day.flight.from} → ${day.flight.to}</span>`;
+    if (day.stay) {
+      const s = day.stay;
+      const label = s.status === "idea"
+        ? "Stay TBD"
+        : [s.name, s.site].filter(Boolean).join(" · ");
+      chips += `<span class="chip stay">🏕️ ${esc(label)}</span>`;
+    }
+
+    let detail = courseSection(day) + staySection(day);
+    if (day.locked && day.locked.length)
+      detail += day.locked.map(l => `<div class="locked-item">🔒 ${esc(l)}</div>`).join("");
+    if (drv) detail += `<button class="show-map" data-date="${day.date}">Show drive on map →</button>`;
+
+    html += `<div class="day${isToday ? " today open" : ""}" data-date="${day.date}">
+      <div class="day-top">
+        <div class="date-badge" style="color:${ph.color}">
+          <div class="mon">${MON[dt.getMonth()]}</div>
+          <div class="dom">${dt.getDate()}</div>
+          <div class="dow">${DOW[dt.getDay()]}</div>
+        </div>
+        <div class="day-body">
+          <div class="day-title">${esc(day.title)}${isToday ? `<span class="today-tag">TODAY</span>` : ""}</div>
+          ${day.location ? `<div class="day-route">${esc(day.location)}</div>` : ""}
+          <div class="day-chips">${chips}</div>
+        </div>
+        <div class="caret">▸</div>
+      </div>
+      <div class="day-detail">${detail}</div>
+    </div>`;
+  });
+
+  const el = document.getElementById("schedule");
+  el.innerHTML = html;
+  el.addEventListener("click", e => {
+    const showBtn = e.target.closest(".show-map");
+    if (showBtn) { e.stopPropagation(); showOnMap(showBtn.dataset.date); return; }
+    if (e.target.closest("a")) return;
+    const card = e.target.closest(".day"); if (!card) return;
+    card.classList.toggle("open");
+  });
+}
+
+function showOnMap(date) {
+  document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === "map"));
+  document.getElementById("schedule").classList.add("hidden");
+  document.getElementById("mapwrap").classList.add("on");
+  requestAnimationFrame(() => {
+    leafletMap ? leafletMap.invalidateSize() : initMap();
+    setTimeout(() => highlightDate(date), 160);
+  });
+}
+
+function initMap() {
+  leafletMap = L.map("mapview", { zoomControl: false });
+  L.control.zoom({ position: "topright" }).addTo(leafletMap);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    { attribution: "&copy; OSM &copy; CARTO", maxZoom: 19 }).addTo(leafletMap);
+
+  const geo = window._geo, schedule = window._schedule;
+  document.getElementById("legend").innerHTML = Object.values(schedule.phases)
+    .map(p => `<div class="lg"><span class="dot" style="background:${p.color}"></span>${p.label}</div>`).join("")
+    + `<div class="lg">🥏 course</div><div class="lg">🏕️ campsite</div>`;
+
+  geo.features.filter(f => f.properties.kind === "drive").forEach(f => {
+    const coords = f.geometry.coordinates.map(([lo, la]) => [la, lo]);
+    const line = L.polyline(coords, DEF).addTo(leafletMap);
+    const p = f.properties;
+    line.on("click", () => highlightDate(p.date));
+    driveByDate[p.date] = { layer: line, bounds: line.getBounds(), props: p };
+    allBounds.push(line.getBounds());
+  });
+
+  geo.features.filter(f => f.properties.kind !== "drive").forEach(f => {
+    const [lo, la] = f.geometry.coordinates, p = f.properties;
+    if (p.play) {
+      L.marker([la, lo], { icon: basketIcon("#ff5e3a") }).addTo(leafletMap)
+        .bindTooltip(`<b>🥏 ${esc(p.name)}</b>${p.note ? "<br>" + esc(p.note) : ""}`,
+          { className: "tip", direction: "top", offset: [0, -20] });
+    } else if (p.camp) {
+      L.marker([la, lo], { icon: campIcon("#ffc24b") }).addTo(leafletMap)
+        .bindTooltip(`<b>🏕️ ${esc(p.name)}</b>${p.note ? "<br>" + esc(p.note) : ""}`,
+          { className: "tip", direction: "top", offset: [0, -18] });
+    } else {
+      L.circleMarker([la, lo], { radius: 4, color: "#fff", weight: 1.5, fillColor: "#8a93a8", fillOpacity: 1 })
+        .addTo(leafletMap)
+        .bindTooltip(esc(p.name), { permanent: true, direction: "right", className: "place-label", offset: [6, 0] });
+    }
+  });
+
+  leafletMap.invalidateSize();
+  if (allBounds.length) setTimeout(() => {
+    leafletMap.invalidateSize();
+    leafletMap.fitBounds(allBounds.reduce((a, b) => a.extend(b)), { padding: [30, 30] });
+  }, 50);
+
+  document.querySelector(".mc-close").addEventListener("click", () => {
+    clearHighlight(); document.getElementById("mapcard").classList.remove("on");
+  });
+}
+
+function basketIcon(color) {
+  const s = 22;
+  return L.divIcon({ className: "basket", iconSize: [s, s], iconAnchor: [s/2, s],
+    html: `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round">
+      <ellipse cx="12" cy="6" rx="6" ry="2.2" fill="${color}" fill-opacity="0.25"/>
+      <path d="M6 6 Q12 11 18 6"/><line x1="6" y1="6" x2="8.5" y2="13"/><line x1="18" y1="6" x2="15.5" y2="13"/>
+      <line x1="12" y1="4" x2="12" y2="13"/><rect x="8.5" y="12.5" width="7" height="2.2" rx="0.6" fill="${color}" stroke="none"/>
+      <line x1="12" y1="14.7" x2="12" y2="22"/><line x1="9" y1="22" x2="15" y2="22"/></svg>` });
+}
+
+function campIcon(color) {
+  const s = 20;
+  return L.divIcon({ className: "camp", iconSize: [s, s], iconAnchor: [s/2, s],
+    html: `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3 L3 21 H21 Z" fill="${color}" fill-opacity="0.25"/><line x1="12" y1="3" x2="12" y2="21"/></svg>` });
+}
+
+function highlightDate(date) {
+  clearHighlight();
+  const d = driveByDate[date]; if (!d) return;
+  selectedDate = date; d.layer.setStyle(HOT); d.layer.bringToFront();
+  leafletMap.fitBounds(d.bounds, { padding: [40, 40] });
+  const card = document.getElementById("mapcard");
+  const day = window._schedule.days.find(dy => dy.date === date);
+  card.querySelector(".mc-title").textContent = day ? day.title : d.props.label;
+  card.querySelector(".mc-sub").textContent =
+    `${d.props.miles} mi · ${d.props.hours} hr` + (day && day.location ? ` — ${day.location}` : "");
+  card.classList.add("on");
+}
+
+function clearHighlight() {
+  if (selectedDate && driveByDate[selectedDate]) driveByDate[selectedDate].layer.setStyle(DEF);
+  selectedDate = null;
+}
+</script>
+</body>
+</html>

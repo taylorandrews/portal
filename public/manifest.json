@@ -7,16 +7,24 @@
       "group": "Travel",
       "outputs": [
         {
-          "slug": "road-trip-map",
-          "title": "Road Trip Map",
+          "slug": "sabbatical-trip",
+          "title": "Sabbatical Trip",
           "icon": "🗺️",
-          "href": "sabbatical/road-trip-map/index.html"
-        },
+          "href": "sabbatical/sabbatical-trip/index.html"
+        }
+      ]
+    },
+    {
+      "slug": "world-cup-26",
+      "name": "World Cup 26",
+      "icon": "⚽",
+      "group": "World Cup",
+      "outputs": [
         {
-          "slug": "road-trip-mobile",
-          "title": "Road Trip Mobile",
-          "icon": "🥏",
-          "href": "sabbatical/road-trip-mobile/index.html"
+          "slug": "live-tracker",
+          "title": "Live Tracker",
+          "icon": "⚽",
+          "href": "world-cup-26/live-tracker/index.html"
         }
       ]
     }
