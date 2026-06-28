@@ -7,10 +7,10 @@
       "group": "Travel",
       "outputs": [
         {
-          "slug": "road-trip-map",
-          "title": "Road Trip Map",
+          "slug": "sabbatical-trip",
+          "title": "Sabbatical Trip",
           "icon": "🗺️",
-          "href": "sabbatical/road-trip-map/index.html"
+          "href": "sabbatical/sabbatical-trip/index.html"
         }
       ]
     },
