@@ -25,6 +25,21 @@
       { "name": "Clauder's Bogey Barn", "lat": 38.572332, "lon": -94.878648, "play": true, "note": "Paola, KS · KS #1 / US #47 · day trip from home" },
       { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 }
     ]},
+    { "date": "2026-08-14", "label": "KC Wide Open R1 — Rosedale Park (Pool B)", "waypoints": [
+      { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 },
+      { "name": "Rosedale Park DGC", "lat": 39.0709, "lon": -94.6267, "play": true, "note": "Kansas City, KS · KC Wide Open R1 · Rosedale Up Top · Pool B (coords approx)" },
+      { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 }
+    ]},
+    { "date": "2026-08-15", "label": "KC Wide Open R2 — Bad Rock Creek (Pool B)", "waypoints": [
+      { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 },
+      { "name": "Bad Rock Creek DGC", "lat": 39.2486, "lon": -94.4172, "play": true, "note": "Liberty, MO · KC Wide Open R2 · Blue layout · Pool B (coords approx)" },
+      { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 }
+    ]},
+    { "date": "2026-08-16", "label": "KC Wide Open Final — Water Works Park (Pool B)", "waypoints": [
+      { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 },
+      { "name": "Water Works Park DGC", "lat": 39.1739, "lon": -94.5705, "play": true, "note": "Kansas City, MO · KC Wide Open Final · Pool B (coords approx)" },
+      { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 }
+    ]},
 
     { "date": "2026-08-17", "label": "KC → Harmony Bends → Finger Lakes SP", "waypoints": [
       { "name": "Kansas City, MO", "lat": 39.0997, "lon": -94.5786 },
