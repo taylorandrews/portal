@@ -140,7 +140,7 @@
     <h1>Sabbatical 2026 🥏</h1>
     <div class="meta">
       <span>Aug 8 – Sep 7</span>
-      <span class="stat" id="stats"></span>
+      <span id="stats" style="display:contents"></span>
     </div>
   </header>
 
@@ -201,10 +201,15 @@ function esc(s){ const d=document.createElement("div"); d.textContent = s==null?
 
 function renderStats(s, geo) {
   const rounds = s.days.reduce((n, d) => n + (d.rounds || 0), 0);
+  const tourney = s.days.reduce((n, d) => n + (d.tournament ? (d.rounds || 0) : 0), 0);
+  const worlds = s.days.filter(d => d.phase === "worlds").length;
   const drives = geo.features.filter(f => f.properties.kind === "drive");
   const miles = Math.round(drives.reduce((n, f) => n + (f.properties.miles || 0), 0));
-  document.getElementById("stats").textContent =
-    `${s.days.length} days · ${rounds} rounds · ${miles.toLocaleString()} mi`;
+  document.getElementById("stats").innerHTML =
+    `<span class="stat">${s.days.length} days</span>` +
+    `<span class="stat">${rounds} rounds${tourney ? ` · ${tourney} tournament` : ""}</span>` +
+    `<span class="stat">${worlds} Worlds watched</span>` +
+    `<span class="stat">${miles.toLocaleString()} mi</span>`;
 }
 
 function mapsUrl(stay){ return `https://www.google.com/maps/search/?api=1&query=${stay.lat},${stay.lon}`; }

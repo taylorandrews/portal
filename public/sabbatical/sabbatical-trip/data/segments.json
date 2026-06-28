@@ -86,20 +86,24 @@
       { "name": "Comerica Park", "lat": 42.3390, "lon": -83.0485, "note": "Detroit · Tigers vs Rays 6:40 PM · Sec 133 · Lot N parking (2055 Cass Ave)" }
     ]},
 
-    { "date": "2026-08-31", "label": "Proud Lake → Illini State Park (IL)", "waypoints": [
+    { "date": "2026-08-31", "label": "Proud Lake → Dellwood Canyons → Illini SP", "waypoints": [
       { "name": "Proud Lake", "lat": 42.560008, "lon": -83.529593 },
+      { "name": "The Canyons at Dellwood Park", "lat": 41.5894, "lon": -88.0517, "play": true, "note": "Lockport, IL · played on the way past Chicago" },
       { "name": "Illini State Park", "lat": 41.3266, "lon": -88.6849, "camp": true, "note": "Marseilles, IL · Great Falls Class A Site 16 · conf 68823" }
     ]},
-    { "date": "2026-09-01", "label": "Illini SP → Iowa City", "waypoints": [
+    { "date": "2026-09-01", "label": "Illini SP → Altmaier Park → Iowa City", "waypoints": [
       { "name": "Illini State Park", "lat": 41.3266, "lon": -88.6849 },
-      { "name": "Iowa City, IA", "lat": 41.661256, "lon": -91.529911 }
+      { "name": "Coralville DGC — Altmaier Park", "lat": 41.7000, "lon": -91.6200, "play": true, "note": "Coralville, IA · IA #4" },
+      { "name": "Iowa City, IA", "lat": 41.661256, "lon": -91.529911, "note": "staying at David's house" }
     ]},
-    { "date": "2026-09-02", "label": "Iowa City → Windmill SRA (Gibbon, NE)", "waypoints": [
+    { "date": "2026-09-02", "label": "Iowa City → Beal Slough → Windmill SRA", "waypoints": [
       { "name": "Iowa City, IA", "lat": 41.661256, "lon": -91.529911 },
+      { "name": "Beal Slough DGC", "lat": 40.7450, "lon": -96.6600, "play": true, "note": "Lincoln, NE · NE #1" },
       { "name": "Windmill SRA", "lat": 40.7117, "lon": -98.8497, "camp": true, "note": "Gibbon, NE · Windmill Campground Site 22 · I-80 exit 285 · conf 2-62754955" }
     ]},
-    { "date": "2026-09-03", "label": "Windmill SRA → Buena Vista", "waypoints": [
+    { "date": "2026-09-03", "label": "Windmill SRA → Optimist/Pessimist → Buena Vista", "waypoints": [
       { "name": "Windmill SRA", "lat": 40.7117, "lon": -98.8497 },
+      { "name": "Optimist & Pessimist", "lat": 40.6260, "lon": -103.2100, "play": true, "note": "Sterling, CO · played on the way through eastern CO" },
       { "name": "Buena Vista, CO", "lat": 38.842218, "lon": -106.131129 }
     ]}
   ]
