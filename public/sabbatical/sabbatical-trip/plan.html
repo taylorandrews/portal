@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip Planning — Sabbatical 2026</title>
+  <style>
+    :root {
+      --bg: #11151f; --card: #1b2130; --card2: #232b3d; --ink: #eef1f7;
+      --muted: #98a1b5; --line: #2c3344; --accent: #ff5e3a; --ok: #28e0c8; --gold: #ffc24b;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink);
+      font: 14.5px/1.5 -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+    a { color: var(--ok); }
+    header { position: sticky; top: 0; z-index: 20; background: rgba(17,21,31,.96);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+      padding: 10px 20px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    header h1 { margin: 0; font-size: 16px; }
+    header .nav { font-size: 13px; }
+    .status { margin-left: auto; font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+    .status.ok { color: var(--ok); }
+    .status.err { color: #ff7a7a; }
+    main { max-width: 820px; margin: 0 auto; padding: 18px 16px 80px; }
+    .intro { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+    .general { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--gold);
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 22px; }
+    .general h2 { margin: 0 0 8px; font-size: 14px; }
+    .phase-header { margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+    .phase-header .ph-label { font-size: 15px; font-weight: 700; }
+    .phase-header .ph-meta { font-size: 12.5px; color: var(--muted); margin-left: 8px; }
+    .day { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--line);
+      border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .day-head { padding: 11px 14px; display: flex; align-items: baseline; gap: 10px;
+      flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+    .day-head .date { font-weight: 700; font-size: 14px; white-space: nowrap; }
+    .day-head .ttl { color: var(--ink); font-weight: 600; }
+    .day-head .drive { margin-left: auto; font-size: 12px; color: var(--gold); white-space: nowrap; }
+    .day-body { padding: 11px 14px 14px; }
+    .est { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+    .est b { color: #c2cadb; font-weight: 600; }
+    .est .pill { display: inline-block; background: #0e121b; border: 1px solid var(--line);
+      border-radius: 6px; padding: 1px 8px; margin: 2px 4px 2px 0; color: var(--ink); }
+    textarea { margin-top: 10px; background: #0e121b; color: var(--ink); border: 1px solid var(--line);
+      border-radius: 8px; padding: 8px 10px; font: inherit; font-size: 13.5px; width: 100%;
+      min-height: 70px; resize: vertical; outline: none; }
+    textarea:focus { border-color: var(--ok); }
+    textarea::placeholder { color: #4a5168; }
+    textarea.big { min-height: 130px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Trip Planning 📝</h1>
+    <span class="nav"><a href="index.html">→ Trip guide</a></span>
+    <span class="status" id="status">Loading…</span>
+  </header>
+  <main>
+    <div class="intro">
+      Type free-form ideas anywhere below — everything <b>autosaves</b> as you go
+      (watch the status, top-right). Then in your terminal, paste any emails or
+      screenshots to Claude and say "fold in my planning notes" — Claude reads what
+      you typed here and bakes the settled stuff into the trip.
+    </div>
+    <div class="general">
+      <h2>Scratchpad — ideas &amp; to-dos</h2>
+      <textarea data-key="general" class="big" placeholder="Brain-dump anything — campsites to book, courses to add, the drive home, people to see, questions for Claude…"></textarea>
+    </div>
+    <div id="sections"></div>
+  </main>
+
+  <script>
+    const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    const pd = s => new Date(s + "T12:00:00");
+    const esc = s => { const d = document.createElement("div"); d.textContent = s==null?"":s; return d.innerHTML; };
+
+    let notes = {}, DRIVE = {};
+    const statusEl = document.getElementById("status");
+    let saveTimer = null, canSave = true;
+
+    Promise.all([
+      fetch("data/schedule.json").then(r => r.json()),
+      fetch("data/route_segments.geojson").then(r => r.json()),
+      fetch("data/planning-notes.json", { cache: "no-store" }).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+    ]).then(([schedule, geo, savedNotes]) => {
+      notes = savedNotes || {};
+      geo.features.filter(f => f.properties.kind === "drive").forEach(f => DRIVE[f.properties.date] = f.properties);
+      document.getElementById("sections").innerHTML = sectionsHtml(schedule);
+      seed(); wire();
+      setStatus("Saved", "ok");
+    }).catch(e => { setStatus("Couldn't load trip data", "err"); console.error(e); });
+
+    function setStatus(t, cls) { statusEl.textContent = t; statusEl.className = "status" + (cls ? " " + cls : ""); }
+
+    function estLine(day) {
+      const parts = [];
+      if (day.location) parts.push(`<div><b>Route:</b> ${esc(day.location)}</div>`);
+      const cs = [day.course, day.course2].filter(c => c && c.name && !c.name.startsWith("("));
+      if (cs.length) parts.push(`<div><b>Disc golf:</b> ${cs.map(c => esc(c.name)).join(" · ")}</div>`);
+      if (day.stay) {
+        const s = day.stay;
+        parts.push(s.status === "idea"
+          ? `<div><b>Stay:</b> 💡 ${esc(s.note || s.where || "")}</div>`
+          : `<div><b>Stay:</b> 🏕️ ${esc(s.name)}${s.site ? ` (${esc(s.site)})` : ""}${s.where ? ` — ${esc(s.where)}` : ""}</div>`);
+      }
+      if (day.locked && day.locked.length)
+        parts.push(day.locked.map(l => `<span class="pill">🔒 ${esc(l)}</span>`).join(""));
+      return `<div class="est">${parts.join("")}</div>`;
+    }
+
+    function sectionsHtml(schedule) {
+      let html = "", cur = null;
+      const groups = [];
+      schedule.days.forEach(d => {
+        const last = groups[groups.length - 1];
+        if (last && last.phase === d.phase) last.days.push(d); else groups.push({ phase: d.phase, days: [d] });
+      });
+      return groups.map(g => {
+        const ph = schedule.phases[g.phase];
+        const a = pd(g.days[0].date), b = pd(g.days[g.days.length - 1].date);
+        const range = `${MON[a.getMonth()]} ${a.getDate()}–${a.getMonth() === b.getMonth() ? b.getDate() : MON[b.getMonth()] + " " + b.getDate()}`;
+        return `<div class="phase-header" style="border-bottom-color:${ph.color}">
+          <span class="ph-label" style="color:${ph.color}">${ph.label}</span>
+          <span class="ph-meta">${range}</span></div>
+          ${g.days.map(d => dayHtml(d, ph)).join("")}`;
+      }).join("");
+    }
+
+    function dayHtml(day, ph) {
+      const d = pd(day.date), drv = DRIVE[day.date];
+      return `<div class="day" style="border-left-color:${ph.color}">
+        <div class="day-head">
+          <span class="date">${WD[d.getDay()]} ${MON[d.getMonth()]} ${d.getDate()}</span>
+          <span class="ttl">${esc(day.title)}</span>
+          ${drv ? `<span class="drive">🚗 ${drv.miles} mi / ${drv.hours} hr</span>` : ""}
+        </div>
+        <div class="day-body">
+          ${estLine(day)}
+          <textarea data-key="${day.date}" placeholder="Notes for this day — lodging tweaks, food, people, things to do, questions for Claude…"></textarea>
+        </div>
+      </div>`;
+    }
+
+    function seed() {
+      document.querySelectorAll("textarea[data-key]").forEach(t => {
+        if (notes[t.dataset.key] != null) t.value = notes[t.dataset.key];
+      });
+    }
+
+    function wire() {
+      document.body.addEventListener("input", e => {
+        const t = e.target; if (t.tagName !== "TEXTAREA" || !t.dataset.key) return;
+        notes[t.dataset.key] = t.value;
+        setStatus("Saving…");
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(save, 500);
+      });
+    }
+
+    async function save() {
+      if (!canSave) return;
+      try {
+        const r = await fetch("api/notes", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(notes),
+        });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const now = new Date();
+        setStatus(`Saved ✓ ${now.getHours()}:${String(now.getMinutes()).padStart(2, "0")}`, "ok");
+      } catch (err) {
+        canSave = false;
+        setStatus("Read-only (run serve.py locally to save)", "err");
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
