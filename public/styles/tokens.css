@@ -1,22 +1,22 @@
 :root {
-  /* Accent — 538-ish editorial red-orange, single confident hue */
-  --accent: #ff5a36;
-  --accent-press: #e34626;
+  /* Accent — deep lilac from logo palette */
+  --accent: #5c4488;
+  --accent-press: #4a3672;
 
-  /* Neutrals — Apple-esque near-blacks/greys */
-  --bg: #f5f5f7;
+  /* Neutrals — purple-tinted to match logo */
+  --bg: #f6f4f8;
   --surface: #ffffff;
-  --ink: #1d1d1f;
-  --ink-2: #6e6e73;
-  --hairline: #e3e3e6;
+  --ink: #0c0714;
+  --ink-2: #6b6573;
+  --hairline: #e5e1ea;
 
   /* Type — system stack */
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
 
   /* Shape */
-  --radius-tile: 22px;   /* iOS app-icon curvature feel */
+  --radius-tile: 22px;
   --radius-card: 16px;
-  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06);
+  --shadow: 0 1px 3px rgba(12,7,20,.1), 0 8px 24px rgba(12,7,20,.08);
 
   /* Spacing scale */
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
@@ -24,10 +24,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --surface: #1c1c1e;
-    --ink: #f5f5f7;
-    --ink-2: #98989d;
-    --hairline: #2c2c2e;
+    --bg: #0c0714;
+    --surface: #161028;
+    --ink: #f0edf4;
+    --ink-2: #8a8490;
+    --hairline: #20183c;
+    --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.2);
   }
 }
