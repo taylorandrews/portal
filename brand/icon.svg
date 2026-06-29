@@ -1,12 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1a1028"/>
-      <stop offset="1" stop-color="#0c0814"/>
-    </linearGradient>
+    <pattern id="tri" width="144" height="84" patternUnits="userSpaceOnUse">
+      <rect width="144" height="42" fill="#1a1230"/>
+      <polygon points="0,42 24,0 48,42" fill="#0d0816"/>
+      <polygon points="48,42 72,0 96,42" fill="#0d0816"/>
+      <polygon points="96,42 120,0 144,42" fill="#2e2055"/>
+      <rect y="42" width="144" height="42" fill="#0d0816"/>
+      <polygon points="0,42 24,84 48,42" fill="#1a1230"/>
+      <polygon points="48,42 72,84 96,42" fill="#4a3878"/>
+      <polygon points="96,42 120,84 144,42" fill="#1a1230"/>
+    </pattern>
   </defs>
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <path d="M 152 140 H 360 M 48 388 L 256 140 L 464 388 M 152 264 H 360"
-        stroke="#c4a6e0" stroke-width="30" stroke-linecap="round"
-        stroke-linejoin="round" fill="none"/>
+  <rect width="512" height="512" rx="112" fill="url(#tri)"/>
 </svg>
