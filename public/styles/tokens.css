@@ -1,7 +1,7 @@
 :root {
-  /* Accent — 538-ish editorial red-orange, single confident hue */
-  --accent: #ff5a36;
-  --accent-press: #e34626;
+  /* Accent — lilac, personal brand hue */
+  --accent: #c4a6e0;
+  --accent-press: #a88cc8;
 
   /* Neutrals — Apple-esque near-blacks/greys */
   --bg: #f5f5f7;
