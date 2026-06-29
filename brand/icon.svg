@@ -81,7 +81,7 @@
     <polygon points="-24,84 0,126 24,84" fill="#302452"/>
     <polygon points="0,126 24,84 48,126" fill="#7b5daa"/>
     <polygon points="24,84 48,126 72,84" fill="#302452"/>
-    <polygon points="48,126 72,84 96,126" fill="#ffffff"/>
+    <polygon points="48,126 72,84 96,126" fill="#110c22"/>
     <polygon points="72,84 96,126 120,84" fill="#302452"/>
     <polygon points="96,126 120,84 144,126" fill="#7b5daa"/>
     <polygon points="120,84 144,126 168,84" fill="#302452"/>
@@ -377,5 +377,6 @@
     <polygon points="480,546 504,588 528,546" fill="#302452"/>
     <polygon points="504,588 528,546 552,588" fill="#7b5daa"/>
     <polygon points="528,546 552,588 576,546" fill="#302452"/>
+    <circle cx="120" cy="120" r="48" fill="#ffffff"/>
   </g>
 </svg>
