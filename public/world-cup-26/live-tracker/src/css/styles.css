@@ -250,8 +250,13 @@
     white-space:nowrap;overflow:hidden}
   .bcard .ln.tbd{background:#f1eee4;color:#aab1a7;font-style:italic;font-weight:600}
   .bcard .ln.prov{opacity:.5}
+  .bcard .ln.lost{opacity:.55}
+  .bcard .ln .bsc{margin-left:auto;padding-left:6px}
+  .bcard-h-right{display:flex;align-items:center;gap:3px}
   .bkc{font-size:7px;background:rgba(255,255,255,.85);color:var(--green-deep);
     font-weight:800;border-radius:2px;padding:0 3px}
+  .bnote{font-size:7px;background:rgba(255,255,255,.85);color:var(--green-deep);
+    font-weight:800;border-radius:2px;padding:0 3px;white-space:nowrap}
 
   /* the final — a feature card between the two halves */
   .bfinal{align-self:center;width:200px;max-width:80%;border-radius:12px;overflow:hidden;
@@ -260,7 +265,10 @@
     background:var(--gold);color:var(--green-deep);padding:5px 10px;text-align:center}
   .bfinal-body{padding:6px}
   .bfinal-body .ln{height:24px;display:flex;align-items:center;justify-content:center;
-    background:#f1eee4;color:#9aa29a;font-style:italic;font-weight:700;font-size:12px;border-radius:5px}
+    font-weight:700;font-size:12px;border-radius:5px}
+  .bfinal-body .ln.tbd{background:#f1eee4;color:#9aa29a;font-style:italic}
+  .bfinal-body .ln.lost{opacity:.55}
+  .bfinal-body .ln .bsc{padding-left:8px}
   .bfinal-trophy{text-align:center;font-size:20px;line-height:1;padding:4px 0}
   .brnote{margin-top:14px;border-radius:8px;border:1px solid #eee}
 
