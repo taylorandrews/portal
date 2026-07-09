@@ -6,7 +6,7 @@
    t:"H:MM"  kick-off time in Central Time.
    v:"City"  venue city / short location.
    ============================================================ */
-export const AS_OF = "Updated July 1, 2026 — group stage complete; Round of 32 through Belgium 3–2 Senegal (AET)";
+export const AS_OF = "Updated July 9, 2026 — Round of 16 complete; quarterfinals set";
 
 export const DATA = [
  {g:"A", teams:{MEX:"Mexico", RSA:"South Africa", KOR:"South Korea", CZE:"Czechia"}, matches:[

@@ -59,40 +59,6 @@
   .dot.q{background:var(--gold)}
   .dot.kc{background:var(--kc);border:1px solid var(--gold)}
 
-  /* ---- "Around now" upcoming block ---- */
-  .upcoming{margin:20px 0 8px}
-  .up-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
-    border-top:3px solid var(--gold);padding-top:16px;margin-bottom:14px}
-  .up-title{font-size:clamp(20px,5vw,30px);font-weight:800;text-transform:uppercase;
-    letter-spacing:-.5px;color:var(--green)}
-  .up-sayswho{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600}
-  .up-days{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-  .up-day{background:#fff;border:1px solid #e3ddcc;border-radius:10px;overflow:hidden;
-    box-shadow:0 1px 0 rgba(0,0,0,.03)}
-  .up-day-h{background:var(--green);color:var(--gold-soft);padding:7px 11px;
-    display:flex;justify-content:space-between;align-items:baseline;
-    font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
-  .up-day-h .date{font-size:10px;font-weight:600;color:rgba(245,241,230,.65)}
-  .up-day.today{border-color:var(--gold);box-shadow:0 3px 12px rgba(232,181,60,.22)}
-  .up-day.today .up-day-h{background:var(--gold);color:var(--green-deep)}
-  .up-day.today .up-day-h .date{color:var(--green-deep);opacity:.7}
-  .up-m{display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #f4f1e8;
-    flex-wrap:wrap}
-  .up-m:last-child{border-bottom:none}
-  .up-m.done{background:#fafdfb}
-  .up-gp{flex:none;width:17px;height:17px;border-radius:4px;display:grid;place-items:center;
-    color:#fff;font-size:9px;font-weight:800}
-  .up-teams{flex:1;display:flex;align-items:center;gap:7px;min-width:0;font-size:12px}
-  .up-tn{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
-  .up-tn:last-child{text-align:right}
-  .up-sc{flex:none;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums;font-size:13px}
-  .up-vs{flex:none;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
-  .up-kc{flex:none;font-size:8px;background:var(--gold);color:var(--green-deep);
-    font-weight:800;border-radius:3px;padding:1px 4px;letter-spacing:.5px}
-  .up-meta{width:100%;font-size:9px;color:var(--muted);white-space:nowrap;letter-spacing:.3px;
-    padding-left:25px;margin-top:-3px}
-  .up-empty{padding:14px;color:var(--muted);font-size:13px;background:#fff;
-    border:1px solid #e3ddcc;border-radius:10px}
   .grid{
     display:grid;
     grid-template-columns:1fr;
@@ -180,8 +146,6 @@
     .stand thead th,.stand tbody td{padding:5px 3px}
     .stand td.tname{padding-left:7px}
     .cdot{margin-right:4px}
-    /* stack upcoming days; one is enough per row on a phone */
-    .up-days{grid-template-columns:1fr}
     /* tighten the bracket and let each half scroll horizontally */
     .bracket{--hg:9px}
     .bcol{min-width:58px}
