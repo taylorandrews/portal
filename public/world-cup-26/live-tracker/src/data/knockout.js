@@ -20,5 +20,22 @@ export const RESULTS = {
   78: {score:[1,2]},                       // Ivory Coast 1-2 Norway
   79: {score:[2,0]},                       // Mexico 2-0 Ecuador
   80: {score:[2,1]},                       // England 2-1 DR Congo
+  81: {score:[2,0]},                       // USA 2-0 Bosnia & Herzegovina
   82: {score:[3,2], aet:true},             // Belgium 3-2 Senegal
+  83: {score:[2,1]},                       // Portugal 2-1 Croatia
+  84: {score:[3,0]},                       // Spain 3-0 Austria
+  85: {score:[2,0]},                       // Switzerland 2-0 Algeria
+  86: {score:[3,2], aet:true},             // Argentina 3-2 Cabo Verde (AET)
+  87: {score:[1,0]},                       // Colombia 1-0 Ghana
+  88: {score:[1,1], aet:true, pens:[2,4]}, // Australia 1-1 Egypt (Egypt wins on pens)
+
+  // Round of 16
+  89: {score:[0,1]},                       // Paraguay 0-1 France
+  90: {score:[0,3]},                       // Canada 0-3 Morocco
+  91: {score:[1,2]},                       // Brazil 1-2 Norway
+  92: {score:[2,3]},                       // Mexico 2-3 England
+  93: {score:[0,1]},                       // Portugal 0-1 Spain
+  94: {score:[1,4]},                       // USA 1-4 Belgium
+  95: {score:[3,2]},                       // Argentina 3-2 Egypt
+  96: {score:[0,0], aet:true, pens:[4,3]}, // Switzerland 0-0 Colombia (Switzerland wins on pens)
 };
