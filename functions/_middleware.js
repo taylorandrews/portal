@@ -3,7 +3,9 @@ import { verifySession } from "./lib/session.js";
 // Exact public paths (no prefix matching, so /login.html.evil stays gated).
 // Cloudflare Pages serves clean URLs (it 308-redirects /login.html -> /login),
 // so both forms must be allowed or the login redirect loops.
-const PUBLIC_EXACT = new Set(["/login", "/login.html", "/manifest.webmanifest"]);
+// /api/trip/updates does its own auth (session OR sync bearer token) so the
+// pull_updates.py canonize script can reach it without a WebAuthn session.
+const PUBLIC_EXACT = new Set(["/login", "/login.html", "/manifest.webmanifest", "/api/trip/updates"]);
 // Public directory/API prefixes (trailing slash required).
 const PUBLIC_PREFIXES = ["/api/auth/", "/styles/", "/icons/"];
 
