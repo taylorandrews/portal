@@ -1,6 +1,7 @@
 import { DATA } from '../data/fixtures.js';
 import { computeTable } from './standings.js';
 import { THIRD_MAP } from '../data/third-place-map.js';
+import { RESULTS } from '../data/knockout.js';
 
 
 
@@ -188,11 +189,17 @@ function thirdTile(matchNum, alloc){
   return {letter:null, pos:2, label:'3rd ?', tentative:true};
 }
 
-// One team line inside a bracket card.
-function bracketLine(tile){
-  if(!tile.letter) return `<div class="ln tbd">${tile.label}</div>`;
+// One team line inside a bracket card. `score`/`win`/`lost` are only set
+// once the match this line belongs to has an actual result recorded.
+function bracketLine(tile, opts={}){
+  if(!tile.letter){
+    return `<div class="ln tbd">${tile.label}</div>`;
+  }
   const prov = tile.tentative ? ' prov' : '';
-  return `<div class="ln${prov}" style="background:var(--g${tile.letter}${tile.pos});color:var(--t${tile.letter}${tile.pos})">${tile.label}</div>`;
+  const win = opts.win ? ' win' : '';
+  const lost = opts.lost ? ' lost' : '';
+  const sc = opts.score!=null ? `<span class="bsc">${opts.score}</span>` : '';
+  return `<div class="ln${prov}${win}${lost}" style="background:var(--g${tile.letter}${tile.pos});color:var(--t${tile.letter}${tile.pos})">${tile.label}${sc}</div>`;
 }
 
 // Build a node tree from a root match number, recursing through R16/QF/SF.
@@ -218,11 +225,46 @@ function bracketLevels(root){
 
 const ROUND_LABELS = ['R32','R16','QF','SF'];
 
+// Given a match's recorded result, which side won: 0 (first) or 1 (second)?
+// Falls back to the penalty shootout when scores are level. Returns null if
+// the match hasn't been played (or, in theory, is an unresolved deadlock).
+function decideWinner(res){
+  if(!res) return null;
+  const [x,y] = res.score;
+  if(x!==y) return x>y ? 0 : 1;
+  if(res.pens) return res.pens[0]>res.pens[1] ? 0 : 1;
+  return null;
+}
+
+// The resolved winning team tile for a bracket node (leaf or internal),
+// or null if that match hasn't produced a winner yet.
+function nodeWinner(node){
+  const side = decideWinner(RESULTS[node.m]);
+  if(side===null) return null;
+  if(node.leaf) return side===0 ? node.H : node.A;
+  return nodeWinner(side===0 ? node.a : node.b);
+}
+
 function bracketCard(n){
+  const res = RESULTS[n.m];
+  const win = decideWinner(res);
+  const noteBits = [];
+  if(res && res.aet) noteBits.push('AET');
+  if(res && res.pens) noteBits.push(`pens ${res.pens[0]}-${res.pens[1]}`);
   const kc = n.kc ? '<span class="bkc">KC</span>' : '';
-  const head = `<div class="bcard-h"><span>M${n.m}</span>${kc}</div>`;
-  const l1 = n.leaf ? bracketLine(n.H) : `<div class="ln tbd">W ${n.a.m}</div>`;
-  const l2 = n.leaf ? bracketLine(n.A) : `<div class="ln tbd">W ${n.b.m}</div>`;
+  const note = noteBits.length ? `<span class="bnote">${noteBits.join(' · ')}</span>` : '';
+  const head = `<div class="bcard-h"><span>M${n.m}</span><span class="bcard-h-right">${kc}${note}</span></div>`;
+
+  let tileA, tileB;
+  if(n.leaf){
+    tileA = n.H; tileB = n.A;
+  } else {
+    const wa = nodeWinner(n.a), wb = nodeWinner(n.b);
+    tileA = wa || {letter:null, label:`Winner M${n.a.m}`};
+    tileB = wb || {letter:null, label:`Winner M${n.b.m}`};
+  }
+  const l1 = bracketLine(tileA, {score: res ? res.score[0] : null, win: win===0, lost: win===1});
+  const l2 = bracketLine(tileB, {score: res ? res.score[1] : null, win: win===1, lost: win===0});
   return `<div class="bm"><div class="bcard${n.kc?' kc':''}">${head}${l1}${l2}</div></div>`;
 }
 
@@ -258,19 +300,23 @@ export function renderMiniBracket(){
   const topRoot = buildBracketTree(finalDef.a, r32map, defByNum);
   const botRoot = buildBracketTree(finalDef.b, r32map, defByNum);
 
+  const finalist1 = nodeWinner(topRoot) || {letter:null, label:`W ${finalDef.a}`};
+  const finalist2 = nodeWinner(botRoot) || {letter:null, label:`W ${finalDef.b}`};
+  const finalRes = RESULTS[finalDef.m];
+  const finalWin = decideWinner(finalRes);
   const finalCard = `<div class="bfinal${finalDef.kc?' kc':''}">
     <div class="bfinal-h">Final · Jul 19 · New York NJ</div>
     <div class="bfinal-body">
-      <div class="ln tbd">W ${finalDef.a}</div>
+      ${bracketLine(finalist1, {score: finalRes ? finalRes.score[0] : null, win: finalWin===0, lost: finalWin===1})}
       <div class="bfinal-trophy">🏆</div>
-      <div class="ln tbd">W ${finalDef.b}</div>
+      ${bracketLine(finalist2, {score: finalRes ? finalRes.score[1] : null, win: finalWin===1, lost: finalWin===0})}
     </div>
   </div>`;
 
   return `
   <section class="block">
     <h2 class="bigtitle">Live bracket</h2>
-    <p class="blurb">The knockout draw as it stands if the group stage ended now. Read it like any bracket — winners flow left to right toward the final. Each tile is tinted by the team's group and finish: dark = group winner, medium = runner-up, light = third place. Faded tiles are provisional (group unfinished or the third-place picture not locked); grey tiles await a knockout result.</p>
+    <p class="blurb">The group stage is complete, so every Round of 32 matchup below is final; results fill in each tile as they're played. Read it like any bracket — winners flow left to right toward the final. Each tile is tinted by the team's group and finish: dark = group winner, medium = runner-up, light = third place. Grey tiles await a knockout result.</p>
     ${renderKey()}
     <div class="bracket-wrap">
       <div class="bhalf">
