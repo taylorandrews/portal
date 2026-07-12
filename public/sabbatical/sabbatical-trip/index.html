@@ -132,6 +132,54 @@
       padding: 8px 10px; display: flex; flex-wrap: wrap; gap: 4px 10px; max-width: 72vw; }
     .map-legend .lg { display: flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--muted); }
     .map-legend .lg .dot { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+
+    /* live updates */
+    .live-tag { font-size: 10.5px; font-weight: 700; color: var(--ok);
+      border: 1px solid rgba(40,224,200,.5); border-radius: 5px; padding: 1px 6px;
+      margin-left: 6px; vertical-align: middle; letter-spacing: .4px; }
+    .day-note { font-size: 13.5px; color: var(--gold); background: rgba(255,194,75,.09);
+      border: 1px dashed rgba(255,194,75,.45); border-radius: 9px;
+      padding: 8px 11px; margin-top: 8px; }
+    .pending-card { background: rgba(255,194,75,.08); border: 1px dashed rgba(255,194,75,.5);
+      border-radius: 12px; padding: 11px 14px; flex-shrink: 0; }
+    .pending-card .pc-hdr { font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .6px; color: var(--gold); margin-bottom: 5px; }
+    .pending-card .pc-item { font-size: 13.5px; color: var(--ink); padding: 3px 0; }
+    .pending-card .pc-item small { color: var(--muted); }
+
+    #fab { position: fixed; right: 18px; bottom: calc(20px + var(--safe-b)); z-index: 900;
+      width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--route);
+      color: #fff; font-size: 24px; cursor: pointer; display: none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.45); -webkit-tap-highlight-color: transparent; }
+    #fab.on { display: block; }
+
+    #sheet-bg { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 950; display: none; }
+    #sheet-bg.on { display: block; }
+    #sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 960; display: none;
+      background: var(--card); border-radius: 18px 18px 0 0; border: 1px solid var(--line);
+      padding: 18px 16px calc(18px + var(--safe-b)); max-height: 80vh; overflow-y: auto; }
+    #sheet.on { display: block; }
+    #sheet h2 { font-size: 16px; margin-bottom: 4px; }
+    #sheet .hint { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; }
+    #sheet textarea { width: 100%; min-height: 84px; background: #0e121b; color: var(--ink);
+      border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font: inherit;
+      resize: vertical; }
+    #sheet .row { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+    #send-update { border: 0; background: var(--route); color: #fff; font: inherit;
+      font-weight: 700; border-radius: 10px; padding: 11px 20px; cursor: pointer; }
+    #send-update:disabled { opacity: .5; }
+    #sheet-status { font-size: 12.5px; color: var(--muted); }
+    .upd-list { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
+    .upd-item { display: flex; gap: 8px; align-items: flex-start; padding: 7px 0;
+      border-bottom: 1px solid var(--line); font-size: 13.5px; }
+    .upd-item .st { flex: none; font-size: 10.5px; font-weight: 700; border-radius: 5px;
+      padding: 1px 6px; margin-top: 2px; }
+    .st.parsed { color: var(--ok); border: 1px solid rgba(40,224,200,.5); }
+    .st.raw, .st.error { color: var(--gold); border: 1px solid rgba(255,194,75,.5); }
+    .upd-item .tx { flex: 1; }
+    .upd-item .tx small { color: var(--muted); display: block; }
+    .upd-item .rm { flex: none; background: none; border: 0; color: var(--muted);
+      font-size: 17px; cursor: pointer; padding: 0 4px; }
   </style>
 </head>
 <body>
@@ -162,6 +210,19 @@
   </div>
 </div>
 
+<button id="fab" title="Trip update">✏️</button>
+<div id="sheet-bg"></div>
+<div id="sheet">
+  <h2>Trip update</h2>
+  <div class="hint">Free-form — "staying in Denver the 15th", "playing Birdland Wed instead". It goes live on this page in seconds; git catches up later.</div>
+  <textarea id="upd-text" placeholder="What changed?"></textarea>
+  <div class="row">
+    <button id="send-update">Send</button>
+    <span id="sheet-status"></span>
+  </div>
+  <div class="upd-list" id="upd-list"></div>
+</div>
+
 <script>
 const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -182,13 +243,34 @@ document.querySelector(".tabs").addEventListener("click", e => {
   if (tab === "map") requestAnimationFrame(() => { leafletMap ? leafletMap.invalidateSize() : initMap(); });
 });
 
+// Schedule source: prefer the portal API (committed schedule + live KV overlay);
+// fall back to the static file for local dev (python3 -m http.server).
+let API_LIVE = false;
+async function loadSchedule() {
+  try {
+    const r = await fetch("/api/trip/schedule", { headers: { accept: "application/json" } });
+    if (r.ok && (r.headers.get("content-type") || "").includes("json")) {
+      API_LIVE = true;
+      return await r.json();
+    }
+  } catch (e) { /* not on the portal */ }
+  return fetch("data/schedule.json").then(r => r.json());
+}
+
+function applySchedule(schedule) {
+  window._schedule = schedule;
+  renderSchedule(schedule, window._geo);
+  renderStats(schedule, window._geo);
+  renderUpdatesUI(schedule);
+}
+
 Promise.all([
-  fetch("data/schedule.json").then(r => r.json()),
+  loadSchedule(),
   fetch("data/route_segments.geojson").then(r => r.json()),
 ]).then(([schedule, geo]) => {
-  window._schedule = schedule; window._geo = geo;
-  renderSchedule(schedule, geo);
-  renderStats(schedule, geo);
+  window._geo = geo;
+  applySchedule(schedule);
+  document.getElementById("fab").classList.toggle("on", API_LIVE);
   const today = document.querySelector(".day.today");
   if (today) setTimeout(() => today.scrollIntoView({ block: "center" }), 60);
 }).catch(e => {
@@ -269,11 +351,13 @@ function renderSchedule(schedule, geo) {
     }
 
     let detail = courseSection(day) + staySection(day);
+    if (day.notes && day.notes.length)
+      detail += day.notes.map(n => `<div class="day-note">📌 ${esc(n)}</div>`).join("");
     if (day.locked && day.locked.length)
       detail += day.locked.map(l => `<div class="locked-item">🔒 ${esc(l)}</div>`).join("");
     if (drv) detail += `<button class="show-map" data-date="${day.date}">Show drive on map →</button>`;
 
-    html += `<div class="day${isToday ? " today open" : ""}" data-date="${day.date}">
+    html += `<div class="day${isToday ? " today open" : ""}${day._live ? " open" : ""}" data-date="${day.date}">
       <div class="day-top">
         <div class="date-badge" style="color:${ph.color}">
           <div class="mon">${MON[dt.getMonth()]}</div>
@@ -281,7 +365,7 @@ function renderSchedule(schedule, geo) {
           <div class="dow">${DOW[dt.getDay()]}</div>
         </div>
         <div class="day-body">
-          <div class="day-title">${esc(day.title)}${isToday ? `<span class="today-tag">TODAY</span>` : ""}</div>
+          <div class="day-title">${esc(day.title)}${isToday ? `<span class="today-tag">TODAY</span>` : ""}${day._live ? `<span class="live-tag">LIVE</span>` : ""}</div>
           ${day.location ? `<div class="day-route">${esc(day.location)}</div>` : ""}
           <div class="day-chips">${chips}</div>
         </div>
@@ -291,15 +375,24 @@ function renderSchedule(schedule, geo) {
     </div>`;
   });
 
+  if (schedule._pending && schedule._pending.length) {
+    const items = schedule._pending.map(p =>
+      `<div class="pc-item">📌 ${esc(p.text)}${p.date ? ` <small>(${esc(p.date)})</small>` : ""}</div>`).join("");
+    html = `<div class="pending-card"><div class="pc-hdr">Pending updates — not yet placed</div>${items}</div>` + html;
+  }
+
   const el = document.getElementById("schedule");
   el.innerHTML = html;
-  el.addEventListener("click", e => {
-    const showBtn = e.target.closest(".show-map");
-    if (showBtn) { e.stopPropagation(); showOnMap(showBtn.dataset.date); return; }
-    if (e.target.closest("a")) return;
-    const card = e.target.closest(".day"); if (!card) return;
-    card.classList.toggle("open");
-  });
+  if (!el._wired) {
+    el._wired = true;
+    el.addEventListener("click", e => {
+      const showBtn = e.target.closest(".show-map");
+      if (showBtn) { e.stopPropagation(); showOnMap(showBtn.dataset.date); return; }
+      if (e.target.closest("a")) return;
+      const card = e.target.closest(".day"); if (!card) return;
+      card.classList.toggle("open");
+    });
+  }
 }
 
 function showOnMap(date) {
@@ -394,6 +487,57 @@ function clearHighlight() {
   if (selectedDate && driveByDate[selectedDate]) driveByDate[selectedDate].layer.setStyle(DEF);
   selectedDate = null;
 }
+
+/* ---------- live trip updates ---------- */
+const sheet = document.getElementById("sheet"), sheetBg = document.getElementById("sheet-bg");
+function openSheet(on) { sheet.classList.toggle("on", on); sheetBg.classList.toggle("on", on); }
+document.getElementById("fab").addEventListener("click", () => openSheet(true));
+sheetBg.addEventListener("click", () => openSheet(false));
+
+function renderUpdatesUI(schedule) {
+  const list = document.getElementById("upd-list");
+  const ups = schedule._updates || [];
+  list.innerHTML = ups.length ? ups.slice().reverse().map(u => `
+    <div class="upd-item" data-id="${u.id}">
+      <span class="st ${u.status}">${u.status === "parsed" ? "LIVE" : "NOTE"}</span>
+      <span class="tx">${esc(u.summary || u.text)}${u.summary ? `<small>${esc(u.text)}</small>` : ""}</span>
+      <button class="rm" title="Remove">&times;</button>
+    </div>`).join("")
+    : `<div style="font-size:13px;color:var(--muted)">No live updates — the committed plan is what you see.</div>`;
+}
+
+document.getElementById("upd-list").addEventListener("click", async e => {
+  const rm = e.target.closest(".rm"); if (!rm) return;
+  const id = rm.closest(".upd-item").dataset.id;
+  await fetch(`/api/trip/updates?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+  const r = await fetch("/api/trip/schedule");
+  if (r.ok) applySchedule(await r.json());
+});
+
+document.getElementById("send-update").addEventListener("click", async () => {
+  const ta = document.getElementById("upd-text"), btn = document.getElementById("send-update"),
+        st = document.getElementById("sheet-status");
+  const text = ta.value.trim(); if (!text) return;
+  btn.disabled = true; st.textContent = "Sending…";
+  try {
+    const r = await fetch("/api/trip/update", {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const schedule = await r.json();
+    applySchedule(schedule);
+    const last = (schedule._updates || [])[schedule._updates.length - 1];
+    st.textContent = last && last.status === "parsed" ? `✓ ${last.summary || "live"}` : "✓ saved as note";
+    ta.value = "";
+  } catch (err) {
+    st.textContent = "Failed — try again";
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => { st.textContent = ""; }, 4000);
+  }
+});
 </script>
 </body>
 </html>
