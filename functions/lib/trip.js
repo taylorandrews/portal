@@ -11,13 +11,27 @@
 // folds the overlay into git and clears it.
 
 export const UPDATES_KEY = "trip:updates";
-const SCHEDULE_ASSET = "/sabbatical/data/schedule.json";
+
+// The guide deploys under a slugged path (public/<project>/<output>/), so
+// resolve it from the synced manifest instead of hardcoding. Note: a missing
+// asset path doesn't 404 on Pages — the SPA fallback serves index.html — so
+// every fetch here validates that the body is actually JSON.
+async function fetchAssetJson(env, request, path) {
+  const res = await env.ASSETS.fetch(new Request(new URL(path, request.url)));
+  const body = await res.text();
+  if (!res.ok || body.trimStart().startsWith("<")) {
+    throw new Error(`asset ${path} not found (status ${res.status})`);
+  }
+  return JSON.parse(body);
+}
 
 export async function loadBaseSchedule(env, request) {
-  const url = new URL(SCHEDULE_ASSET, request.url);
-  const res = await env.ASSETS.fetch(new Request(url));
-  if (!res.ok) throw new Error(`base schedule fetch failed: ${res.status}`);
-  return res.json();
+  const manifest = await fetchAssetJson(env, request, "/manifest.json");
+  const proj = (manifest.projects || []).find((p) => p.slug === "sabbatical");
+  const href = proj?.outputs?.[0]?.href; // e.g. "sabbatical/sabbatical-trip/index.html"
+  if (!href) throw new Error("sabbatical output not in manifest.json");
+  const dir = href.slice(0, href.lastIndexOf("/"));
+  return fetchAssetJson(env, request, `/${dir}/data/schedule.json`);
 }
 
 export async function loadUpdates(env) {
