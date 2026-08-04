@@ -4,6 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Sabbatical 2026</title>
+  <meta name="theme-color" content="#11151f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sabbatical">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="leaflet.css">
   <script src="leaflet.js"></script>
   <style>
@@ -99,6 +104,22 @@
       color: #fff; background: var(--route); border-radius: 9px; padding: 9px 16px;
       text-decoration: none; -webkit-tap-highlight-color: transparent; }
 
+    /* weather */
+    .wx { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .wx-ico { font-size: 22px; line-height: 1; }
+    .wx-temp { font-size: 15px; font-weight: 700; }
+    .wx-temp .lo { color: var(--muted); font-weight: 600; }
+    .wx-meta { font-size: 12.5px; color: var(--muted); }
+    .wx-alert { color: var(--route-hot); font-weight: 700; }
+    .wx-loading { font-size: 12.5px; color: var(--muted); }
+    .chip.wx { color: #7fd4ff; }
+    .directions.course-dir { background: var(--card2); border: 1px solid var(--line); color: var(--ink); margin-left: 8px; }
+
+    .offline-banner { flex: none; display: none; background: rgba(255,194,75,.14);
+      color: var(--gold); font-size: 12.5px; font-weight: 600; text-align: center;
+      padding: 5px 12px; border-bottom: 1px solid rgba(255,194,75,.3); }
+    .offline-banner.on { display: block; }
+
     .locked-item { color: var(--gold); font-size: 13px; margin-top: 8px; }
     .show-map { display: inline-block; margin-top: 12px; color: var(--ink);
       background: var(--card2); border: 1px solid var(--line); border-radius: 9px;
@@ -192,6 +213,8 @@
     </div>
   </header>
 
+  <div class="offline-banner" id="offline-banner">⚠ Offline — showing last saved plan</div>
+
   <div class="tabs">
     <button class="on" data-tab="schedule">Schedule</button>
     <button data-tab="map">Map</button>
@@ -245,16 +268,36 @@ document.querySelector(".tabs").addEventListener("click", e => {
 
 // Schedule source: prefer the portal API (committed schedule + live KV overlay);
 // fall back to the static file for local dev (python3 -m http.server).
-let API_LIVE = false;
+let API_LIVE = false, USING_CACHE = false;
+function cacheGet(k){ try { return JSON.parse(localStorage.getItem(k)); } catch(e){ return null; } }
+function cacheSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+
 async function loadSchedule() {
   try {
     const r = await fetch("/api/trip/schedule", { headers: { accept: "application/json" } });
     if (r.ok && (r.headers.get("content-type") || "").includes("json")) {
       API_LIVE = true;
-      return await r.json();
+      const j = await r.json(); cacheSet("wx_schedule", j); return j;
     }
   } catch (e) { /* not on the portal */ }
-  return fetch("data/schedule.json").then(r => r.json());
+  try {
+    const j = await fetch("data/schedule.json").then(r => r.json());
+    cacheSet("wx_schedule", j); return j;
+  } catch (e) {
+    const cached = cacheGet("wx_schedule");
+    if (cached) { USING_CACHE = true; return cached; }
+    throw e;
+  }
+}
+async function loadGeo() {
+  try {
+    const g = await fetch("data/route_segments.geojson").then(r => r.json());
+    cacheSet("wx_geo", g); return g;
+  } catch (e) {
+    const cached = cacheGet("wx_geo");
+    if (cached) { USING_CACHE = true; return cached; }
+    throw e;
+  }
 }
 
 function applySchedule(schedule) {
@@ -264,20 +307,26 @@ function applySchedule(schedule) {
   renderUpdatesUI(schedule);
 }
 
-Promise.all([
-  loadSchedule(),
-  fetch("data/route_segments.geojson").then(r => r.json()),
-]).then(([schedule, geo]) => {
+Promise.all([loadSchedule(), loadGeo()]).then(([schedule, geo]) => {
   window._geo = geo;
   applySchedule(schedule);
   document.getElementById("fab").classList.toggle("on", API_LIVE);
+  document.getElementById("offline-banner").classList.toggle("on", USING_CACHE || !navigator.onLine);
   const today = document.querySelector(".day.today");
   if (today) setTimeout(() => today.scrollIntoView({ block: "center" }), 60);
 }).catch(e => {
   document.getElementById("schedule").innerHTML =
-    `<p style="color:var(--muted);padding:20px">Couldn't load trip data.</p>`;
+    `<p style="color:var(--muted);padding:20px">Couldn't load trip data, and nothing saved offline yet. Open this once with signal to cache it.</p>`;
   console.error(e);
 });
+
+window.addEventListener("online",  () => document.getElementById("offline-banner").classList.toggle("on", USING_CACHE));
+window.addEventListener("offline", () => document.getElementById("offline-banner").classList.add("on"));
+
+// Offline app shell
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
 
 function esc(s){ const d=document.createElement("div"); d.textContent = s==null?"":s; return d.innerHTML; }
 
@@ -299,12 +348,73 @@ function mapsUrl(stay){ return `https://www.google.com/maps/search/?api=1&query=
 function courseSection(day) {
   const cs = [day.course, day.course2].filter(c => c && c.name && !c.name.startsWith("("));
   if (!cs.length) return "";
-  const rows = cs.map(c => `<div class="course-row">
+  const rows = cs.map(c => {
+    const q = encodeURIComponent(`${c.name} disc golf`);
+    const dir = `https://www.google.com/maps/search/?api=1&query=${q}`;
+    return `<div class="course-row">
       <div class="course-name">${esc(c.name)}</div>
       ${c.ranks ? `<div class="course-ranks">${esc(c.ranks)}</div>` : ""}
-      ${c.udisc_url ? `<a class="udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>` : ""}
-    </div>`).join("");
+      <div>
+        ${c.udisc_url ? `<a class="udisc" href="${esc(c.udisc_url)}" target="_blank" rel="noopener">UDisc ↗</a>` : ""}
+        <a class="directions course-dir" href="${dir}" target="_blank" rel="noopener">📍 Directions</a>
+      </div>
+    </div>`;
+  }).join("");
   return `<div class="sec"><div class="sec-label">Disc Golf</div>${rows}</div>`;
+}
+
+/* ---------- weather (Open-Meteo, no key) ---------- */
+const WX_CACHE = {};
+const WMO = {
+  0:["☀️","Clear"],1:["🌤️","Mostly clear"],2:["⛅","Partly cloudy"],3:["☁️","Overcast"],
+  45:["🌫️","Fog"],48:["🌫️","Rime fog"],51:["🌦️","Light drizzle"],53:["🌦️","Drizzle"],55:["🌧️","Heavy drizzle"],
+  61:["🌦️","Light rain"],63:["🌧️","Rain"],65:["🌧️","Heavy rain"],66:["🌧️","Freezing rain"],67:["🌧️","Freezing rain"],
+  71:["🌨️","Light snow"],73:["🌨️","Snow"],75:["❄️","Heavy snow"],77:["❄️","Snow grains"],
+  80:["🌦️","Showers"],81:["🌧️","Showers"],82:["⛈️","Violent showers"],85:["🌨️","Snow showers"],86:["🌨️","Snow showers"],
+  95:["⛈️","Thunderstorm"],96:["⛈️","Storm + hail"],99:["⛈️","Storm + hail"]
+};
+function wxCoords(day){
+  if (day.stay && day.stay.lat != null && day.stay.lon != null) return [day.stay.lat, day.stay.lon];
+  return null;
+}
+async function loadWeather(day, host){
+  const co = wxCoords(day); if (!co) return;
+  const key = `${day.date}@${co[0].toFixed(2)},${co[1].toFixed(2)}`;
+  if (WX_CACHE[key]) { host.innerHTML = renderWx(WX_CACHE[key]); return; }
+  host.innerHTML = `<div class="wx-loading">Loading forecast…</div>`;
+  try {
+    const u = `https://api.open-meteo.com/v1/forecast?latitude=${co[0]}&longitude=${co[1]}`
+      + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max`
+      + `&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&start_date=${day.date}&end_date=${day.date}`;
+    const r = await fetch(u);
+    if (!r.ok) throw new Error("wx http " + r.status);
+    const j = await r.json();
+    const d = j.daily;
+    if (!d || !d.time || !d.time.length || d.temperature_2m_max[0] == null) {
+      host.innerHTML = `<div class="wx-loading">Forecast available closer to the date.</div>`; return;
+    }
+    const wx = { code: d.weather_code[0], hi: Math.round(d.temperature_2m_max[0]),
+      lo: Math.round(d.temperature_2m_min[0]), pop: d.precipitation_probability_max[0],
+      wind: Math.round(d.wind_speed_10m_max[0]) };
+    WX_CACHE[key] = wx;
+    host.innerHTML = renderWx(wx);
+  } catch (e) {
+    host.innerHTML = `<div class="wx-loading">Forecast unavailable offline.</div>`;
+  }
+}
+function renderWx(wx){
+  const [ico, label] = WMO[wx.code] || ["🌡️", "—"];
+  const alerts = [];
+  if (wx.pop >= 60) alerts.push(`${wx.pop}% rain`);
+  if (wx.wind >= 20) alerts.push(`${wx.wind} mph wind`);
+  if (wx.hi >= 95) alerts.push("heat");
+  if (wx.code >= 95) alerts.push("storms");
+  const alert = alerts.length ? `<span class="wx-alert">⚠ ${esc(alerts.join(" · "))}</span>` : "";
+  return `<div class="wx">
+    <span class="wx-ico">${ico}</span>
+    <span class="wx-temp">${wx.hi}°<span class="lo"> / ${wx.lo}°</span></span>
+    <span class="wx-meta">${esc(label)} · 💧${wx.pop ?? 0}% · 💨${wx.wind}mph</span>
+    ${alert}</div>`;
 }
 
 function staySection(day) {
@@ -350,7 +460,10 @@ function renderSchedule(schedule, geo) {
       chips += `<span class="chip stay">🏕️ ${esc(label)}</span>`;
     }
 
-    let detail = courseSection(day) + staySection(day);
+    const wxSec = wxCoords(day)
+      ? `<div class="sec"><div class="sec-label">Weather</div><div class="wx-host" data-date="${day.date}"></div></div>`
+      : "";
+    let detail = wxSec + courseSection(day) + staySection(day);
     if (day.notes && day.notes.length)
       detail += day.notes.map(n => `<div class="day-note">📌 ${esc(n)}</div>`).join("");
     if (day.locked && day.locked.length)
@@ -391,8 +504,18 @@ function renderSchedule(schedule, geo) {
       if (e.target.closest("a")) return;
       const card = e.target.closest(".day"); if (!card) return;
       card.classList.toggle("open");
+      if (card.classList.contains("open")) loadOpenWeather();
     });
   }
+  loadOpenWeather();
+}
+
+function loadOpenWeather(){
+  document.querySelectorAll(".day.open .wx-host:not([data-loaded])").forEach(host => {
+    host.setAttribute("data-loaded", "1");
+    const day = (window._schedule.days || []).find(d => d.date === host.dataset.date);
+    if (day) loadWeather(day, host);
+  });
 }
 
 function showOnMap(date) {

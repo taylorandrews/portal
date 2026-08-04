@@ -24,22 +24,22 @@ KC (start)  →  fly to Denver  →  Buena Vista (truck prep)
 
 | Date | Plan |
 |------|------|
-| **Sat 8/8** | Wake in KC · fly to Denver · drive to Buena Vista / parents' (120 mi) · prep the truck · sleep in BV |
-| **Sun 8/9** | Flex day at parents' (BV) · day trip to Salida, play **Heart of the Rockies DGC** · ~50 mi round trip · sleep in BV |
-| **Mon 8/10** | Leave parents' · **10am tee at Buck Snort** (Pine, CO · CO #2) · drive to Denver · 138 mi · sleep in Denver |
-| **Tue 8/11** | ⚠ Denver → **Sterling** (play **Optimist & Pessimist**) → push to Emporia · **634 mi / 12.3 hr** · sleep near Emporia |
-| **Wed 8/12** | Morning round at **Jones Park: East** (Emporia · KS #9) · drive home to KC · 109 mi · sleep at home |
-| **Thu 8/13** | **Clauder's Bogey Barn** day trip from KC (Paola · KS #1 / US #47) · ~90 mi round trip |
-| **Fri 8/14** | Woodside · house project? |
-| **Sat 8/15** | KC |
-| **Sun 8/16** | KC |
+| **Sat 8/8** | Fly KC→Denver (**UA280, 9:10 AM MCI → 10:17 AM DEN**) · to Buena Vista / parents' · evening round at **Amy Lynch Memorial DGC** · sleep in BV (parents' camper) |
+| **Sun 8/9** | Flex day at parents' (BV) · day trip to Salida, play **Heart of the Rockies DGC** · sleep in BV |
+| **Mon 8/10** | **9:58am MT tee at Buck Snort** (Pine, CO · CO #2) · then **Lower Badlands** (Westminster) · camp near Elizabeth, CO — ⚠ *not booked* |
+| **Tue 8/11** | **Prickly Pines** (Elizabeth, CO · CO #7 · $5) · drive into Kansas · camp Council Grove Lake COE, KS — ⚠ *not booked* |
+| **Wed 8/12** | Morning round at **Jones Park: East** (Emporia · KS #9) · drive home to KC · sleep at home |
+| **Thu 8/13** | **Clauder's Bogey Barn** day trip (Paola · KS #1 / US #47) · eve: **KC Wide Open player party & pack pickup**, BKS Artisan Ales 5–9 PM |
+| **Fri 8/14** | 🏆 **KC Wide Open R1** — Rosedale Park Up Top (Pool B) · *WAITLISTED* |
+| **Sat 8/15** | 🏆 **KC Wide Open R2** — Bad Rock Creek Blue (Pool B) · eve Fly Mart + Glow Round, Water Works |
+| **Sun 8/16** | 🏆 **KC Wide Open Final** — Water Works Park (Pool B) |
 
-> ⚠ **Aug 11 is brutal: 634 mi / ~12 hr** of driving *plus* two rounds at
-> Sterling — not realistically doable. Sterling (NE CO) to Emporia (E KS) is
-> ~500 mi on its own. Options: (a) sleep partway (e.g., Salina, ~1.5 hr W of
-> Emporia) on the 11th and still play Emporia mid-morning on the 12th before
-> heading home; (b) drop Emporia from this loop and play a course nearer the
-> Sterling→KC line; (c) skip Sterling. Emporia→KC itself is only ~2 hr.
+> ✅ **Aug 11 fixed.** The old plan (Denver → Sterling → Emporia, 634 mi / ~12 hr)
+> was dropped. The CO-disc loop now works east gradually — Buck Snort/Lower
+> Badlands (8/10) → Prickly Pines + into KS (8/11) → Jones Park East → home (8/12).
+> Sterling's Optimist/Pessimist got moved to the **drive home** (9/3) instead.
+> ⚠ **Still unbooked: the nights of 8/10 (Elizabeth, CO) and 8/11 (Council Grove, KS).**
+> ⚠ **KC Wide Open (8/14–16) is WAITLISTED, not confirmed** — have a backup plan for those days.
 
 ---
 
@@ -95,13 +95,13 @@ campground.
 
 | Date | Plan |
 |------|------|
-| **Mon 8/31** | Wake at Proud Lake · check out by 1 PM · drive to Iowa City · sleep Iowa City |
-| **Tue 9/1** | Spend the day in Iowa City · sleep Iowa City |
-| **Wed 9/2** | Drive halfway to Denver via Nebraska · sleep on the road? |
-| **Thu 9/3** | Wake in Nebraska · drive to BV · sleep BV/Denver |
-| **Fri 9/4** | Wake in Denver · fly to KC · sleep in KC |
+| **Mon 8/31** | Check out Proud Lake by 1 PM · past Chicago, play **The Canyons at Dellwood Park** (Lockport, IL) · sleep **Illini SP** (Marseilles, IL · site 16 · booked) |
+| **Tue 9/1** | Play **Coralville / Altmaier Park** (IA #4) · dinner in Iowa City, see David · **stay at David's house** |
+| **Wed 9/2** | Drive to Lincoln, play **Beal Slough** (NE #1) · push west · sleep **Windmill SRA** (Gibbon, NE · site 22 · booked) |
+| **Thu 9/3** | AM round on the **Windmill SRA** course · drive to BV, playing **Optimist/Pessimist** (Sterling) on the way · sleep BV — ⚠ *not booked* |
+| **Fri 9/4** | Get truck to BV + self to DEN · fly **UA586, 1:26 PM DEN → 4:11 PM MCI** · sleep KC — ⚠ *car/logistics TBD* |
 | **Sat–Mon 9/5–9/7** | Labor Day weekend in KC |
 
-> Return route passes through Iowa & Nebraska — both are route states in the
-> course dataset (e.g. Wildcat Bluff IA #1, Beal Slough NE #1) if you want a
-> course on the way back.
+> ⚠ **Two open items on the drive home:** (1) the **night of 9/3 in BV** is not
+> booked (parents'?); (2) **9/4 has no car** — how does the truck get back to BV
+> and you to DEN for the 1:26 PM flight? Solve both before departure.
