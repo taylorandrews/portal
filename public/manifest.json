@@ -1,6 +1,20 @@
 {
   "projects": [
     {
+      "slug": "ballot",
+      "name": "Ballot",
+      "icon": "🗳️",
+      "group": "Civic",
+      "outputs": [
+        {
+          "slug": "marked-ballot-aug-4-2026",
+          "title": "Marked Ballot · Aug 4 2026",
+          "icon": "🗳️",
+          "href": "ballot/marked-ballot-aug-4-2026/index.html"
+        }
+      ]
+    },
+    {
       "slug": "sabbatical",
       "name": "Sabbatical",
       "icon": "🏕️",

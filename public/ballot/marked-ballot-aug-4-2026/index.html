@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#D7E0D4">
+<title>Marked Ballot · W8-P1,4,14 · Aug 4 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sheet:#D7E0D4;
+  --card:#EFF2EA;
+  --rule:#2C5748;
+  --rule-soft:rgba(44,87,72,.26);
+  --ink:#101418;
+  --muted:#4A5A52;
+  --alert:#94302A;
+  --rail:16px;
+  --disp:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --mono:'Space Mono',ui-monospace,'Courier New',monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--sheet);
+  color:var(--ink);
+  font-family:var(--disp);
+  font-size:16px;
+  line-height:1.35;
+  padding-left:var(--rail);
+  padding-bottom:64px;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── SIGNATURE: optical-scan timing-mark rail = progress ── */
+#rail{
+  position:fixed;left:0;top:0;bottom:0;width:var(--rail);
+  background:var(--rule);
+  display:flex;flex-direction:column;justify-content:space-evenly;
+  align-items:center;padding:8px 0;z-index:40;
+}
+#rail i{
+  display:block;width:8px;height:14px;border-radius:1px;
+  background:rgba(255,255,255,.22);
+  transition:background .18s ease,transform .18s ease;
+}
+#rail i.on{background:#fff;transform:scaleY(1.12)}
+
+.wrap{max-width:540px;margin:0 auto;padding:0 14px}
+
+/* ── HERO: the check-in stub ── */
+header{padding:22px 0 6px}
+.meta{
+  font-family:var(--mono);font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--rule);
+  display:flex;justify-content:space-between;gap:10px;
+  border-bottom:2px solid var(--rule);padding-bottom:6px;
+}
+.stub{
+  margin-top:14px;background:var(--ink);color:var(--sheet);
+  padding:16px 16px 14px;border-radius:2px;
+}
+.stub .say{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.65
+}
+.stub h1{
+  margin:6px 0 0;font-size:34px;line-height:.95;font-weight:800;
+  letter-spacing:-.02em;text-transform:uppercase
+}
+.stub h1 em{font-style:normal;display:block;font-size:15px;letter-spacing:.06em;
+  font-weight:600;opacity:.7;margin-top:8px}
+.stub .init{
+  margin-top:14px;padding-top:10px;border-top:1px dashed rgba(215,224,212,.35);
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  display:flex;justify-content:space-between;opacity:.75
+}
+.brief{
+  margin-top:10px;font-family:var(--mono);font-size:12.5px;line-height:1.6;
+  color:var(--rule)
+}
+.brief b{color:var(--ink)}
+
+/* ── section headers ── */
+.side{
+  margin:30px 0 4px;font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--sheet);
+  background:var(--rule);padding:6px 10px;border-radius:2px
+}
+.sect{
+  margin:22px 0 10px;font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--rule);
+  border-bottom:2px solid var(--rule);padding-bottom:5px
+}
+
+/* ── race cards ── */
+.race{
+  width:100%;text-align:left;display:block;cursor:pointer;
+  background:var(--card);border:1.5px solid var(--rule-soft);border-left:4px solid var(--rule-soft);
+  border-radius:2px;padding:12px 13px;margin:0 0 9px;
+  font:inherit;color:inherit;transition:border-color .16s ease,background .16s ease;
+}
+.race:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.race.done{border-left-color:var(--ink);background:#E4EADE}
+.office{
+  font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--rule);display:flex;gap:7px;align-items:baseline
+}
+.office .n{color:var(--ink);opacity:.45}
+.pick{display:flex;align-items:center;gap:11px;margin:9px 0 0}
+.oval{
+  flex:0 0 auto;width:22px;height:15px;border-radius:11px/8px;
+  border:2.5px solid var(--ink);background:transparent;transition:background .16s ease
+}
+.race.done .oval{background:var(--ink)}
+.race.no .oval{border-color:var(--alert)}
+.race.no.done .oval{background:var(--alert)}
+.name{
+  font-size:22px;font-weight:800;line-height:1.03;letter-spacing:-.015em;
+  text-transform:uppercase
+}
+.race.no .name{color:var(--alert)}
+.tag{
+  display:inline-block;margin-left:7px;vertical-align:2px;
+  font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);border:1px solid var(--rule-soft);
+  border-radius:2px;padding:1.5px 4px
+}
+.why{margin:8px 0 0 33px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.why strong{color:var(--alert);font-weight:600}
+
+/* ── counter ── */
+#bar{
+  position:fixed;left:var(--rail);right:0;bottom:0;z-index:41;
+  background:var(--ink);color:var(--sheet);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:11px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.09em;
+  text-transform:uppercase
+}
+#bar button{
+  font:inherit;letter-spacing:.09em;text-transform:uppercase;
+  background:none;border:1px solid rgba(215,224,212,.4);color:var(--sheet);
+  padding:5px 10px;border-radius:2px;cursor:pointer
+}
+#bar button:focus-visible{outline:2px solid var(--sheet);outline-offset:2px}
+footer{
+  margin:26px 0 8px;font-family:var(--mono);font-size:11px;line-height:1.7;
+  color:var(--rule);border-top:2px solid var(--rule);padding-top:10px
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="rail" aria-hidden="true"></div>
+
+<div class="wrap">
+<header>
+  <div class="meta"><span>KC Board of Election Commissioners</span><span>W8-P1,4,14</span></div>
+
+  <div class="stub">
+    <div class="say">At the check-in table, say</div>
+    <h1>Democratic<br>Ballot
+      <em>One ballot only — you can't split across parties</em>
+    </h1>
+    <div class="init"><span>Tue Aug 4 2026</span><span>Polls 6a–7p</span></div>
+  </div>
+
+  <p class="brief">
+    <b>Bring photo ID.</b> In line at 7pm still votes.<br>
+    <b>Vote both sides</b> — KC questions are on the back.<br>
+    19 marks total. Tap a card to fill its oval.
+  </p>
+</header>
+
+<div class="side">Front of ballot</div>
+
+<div class="sect">Federal Offices</div>
+<button class="race" type="button">
+  <div class="office"><span class="n">01</span><span>U.S. Representative · District 4 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Hartzell Gray III</span></div>
+  <div class="why">Activist. Thin public record across this whole field — and the redrawn district is R+21, so this names a long-shot nominee.</div>
+</button>
+
+<div class="sect">State Offices</div>
+<button class="race" type="button">
+  <div class="office"><span class="n">02</span><span>State Auditor · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Quentin Wilson</span></div>
+  <div class="why">Ran the Missouri Dept. of Revenue; the only candidate with a state finance record. Upchurch didn't respond to press.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">03</span><span>State Representative · District 25 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Pattie Mansur<span class="tag">Unopposed</span></span></div>
+  <div class="why">First-term incumbent. KCPS board 7 years, two as president.</div>
+</button>
+
+<div class="sect">County Offices</div>
+<button class="race" type="button">
+  <div class="office"><span class="n">04</span><span>County Executive · Jackson County · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Ryan Meyer</span></div>
+  <div class="why">The refund-skeptic: says payouts come out of schools and libraries. Hire more assessors, 15% cap, transit as economic development. This primary effectively decides the seat.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">05</span><span>At-Large County Legislator · District 1 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Carla Fields</span></div>
+  <div class="why">Closest to Meyer's diagnosis — fix the process, not the vendor. Publish the valuation method, independent Board of Equalization, equity audits.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">06</span><span>At-Large County Legislator · District 2 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Donna Peyton</span></div>
+  <div class="why">Budget chair. Oversight-first on assessments; won't auto-renew the 3/8¢ stadium tax. <strong>Switched from Ellington — say the word and I'll flip it back.</strong></div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">07</span><span>At-Large County Legislator · District 3 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Susan B. Wilson<span class="tag">Unopposed</span></span></div>
+  <div class="why">No Republican filed — this vote elects her outright.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">08</span><span>County Legislator · District 1 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Kelly Thompson<span class="tag">Unopposed</span></span></div>
+  <div class="why">Fills Abarca's vacated seat. Former journalist; KC AFL-CIO endorsed.</div>
+</button>
+
+<div class="sect">County Committee · Ward 8</div>
+<button class="race" type="button">
+  <div class="office"><span class="n">09</span><span>County Committeeman · Ward 8 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Alex Sachs<span class="tag">Unopposed</span></span></div>
+  <div class="why">Party organizational post, not a government office.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">10</span><span>County Committeewoman · Ward 8 · vote for one</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Marsha Lerenburg<span class="tag">Unopposed</span></span></div>
+  <div class="why">Same — ward-level party governance.</div>
+</button>
+
+<div class="sect">State Amendments</div>
+<button class="race" type="button">
+  <div class="office"><span class="n">11</span><span>Constitutional Amendment No. 1 · Parks, soil &amp; water</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Yes</span></div>
+  <div class="why">Renews the 0.1% sales tax. ~$140M/yr, split 50-50 between state parks and soil &amp; water conservation. No organized opposition. Sunsets in 2028 if this fails.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">12</span><span>Constitutional Amendment No. 2 · Elected assessor</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Yes</span></div>
+  <div class="why">Locks the elected assessor into the state constitution. Jackson County already voted it in 88-12 last November; first election 2028.</div>
+</button>
+<button class="race no" type="button">
+  <div class="office"><span class="n">13</span><span>Constitutional Amendment No. 4 · Initiative petitions</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">No</span></div>
+  <div class="why">Citizen initiatives would have to win all 8 congressional districts. The legislature's own amendments would still need only a statewide majority.</div>
+</button>
+<button class="race no" type="button">
+  <div class="office"><span class="n">14</span><span>Constitutional Amendment No. 5 · Income tax</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">No</span></div>
+  <div class="why">Ends the income tax — $8.5B, 64% of general revenue — and lets lawmakers tax all goods and services. Missouri Budget Project estimates a net tax increase for 80% of Missourians.</div>
+</button>
+
+<div class="side">Back of ballot</div>
+
+<div class="sect">City of Kansas City, Missouri</div>
+<button class="race" type="button">
+  <div class="office"><span class="n">15</span><span>Question No. 1 · Affordable housing</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Yes</span></div>
+  <div class="why">$100M bond into the Housing Trust Fund. <strong>Needs a 4/7 majority, not a simple one.</strong> No tax increase — replaces retiring debt.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">16</span><span>Question No. 2 · Civic buildings</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Yes</span></div>
+  <div class="why">$100M for Municipal Auditorium, Music Hall, City Hall, Bartle Hall. Same replace-retiring-debt structure.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">17</span><span>Question No. 3 · Central City sales tax</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Yes</span></div>
+  <div class="why">Renews the 1/8¢ East Side economic development tax for 10 years at the same rate. Current one expires Sept 2027.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">18</span><span>Question No. 4 · Waterworks</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Yes</span></div>
+  <div class="why">$750M revenue bond, repaid from water rates — not property taxes. Much of the work is mandated by the 2010 consent decree.</div>
+</button>
+<button class="race" type="button">
+  <div class="office"><span class="n">19</span><span>Question No. 5 · Sanitary sewer</span></div>
+  <div class="pick"><span class="oval"></span><span class="name">Yes</span></div>
+  <div class="why">$750M, same structure. Replacing sewers Lucas describes as some brick, some wooden.</div>
+</button>
+
+<footer>
+  Which ballot you request is public record. How you vote is not.<br>
+  Ward 8 · Precincts 1, 4, 14 · kceb.org
+</footer>
+</div>
+
+<div id="bar">
+  <span id="count">0 / 19 marked</span>
+  <button id="reset" type="button">Reset</button>
+</div>
+
+<script>
+(function(){
+  var races = Array.prototype.slice.call(document.querySelectorAll('.race'));
+  var rail  = document.getElementById('rail');
+  var count = document.getElementById('count');
+
+  races.forEach(function(r, i){
+    var mark = document.createElement('i');
+    rail.appendChild(mark);
+    r.setAttribute('aria-pressed','false');
+    r.addEventListener('click', function(){
+      var on = r.classList.toggle('done');
+      mark.classList.toggle('on', on);
+      r.setAttribute('aria-pressed', on ? 'true' : 'false');
+      tally();
+    });
+  });
+
+  function tally(){
+    var n = document.querySelectorAll('.race.done').length;
+    count.textContent = n + ' / ' + races.length + ' marked';
+    if (n === races.length) count.textContent = 'Ballot complete — vote both sides';
+  }
+
+  document.getElementById('reset').addEventListener('click', function(){
+    races.forEach(function(r){ r.classList.remove('done'); r.setAttribute('aria-pressed','false'); });
+    Array.prototype.forEach.call(rail.children, function(m){ m.classList.remove('on'); });
+    tally();
+  });
+})();
+</script>
+</body>
+</html>

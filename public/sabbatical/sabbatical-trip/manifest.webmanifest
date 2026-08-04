@@ -1,0 +1,19 @@
+{
+  "name": "Sabbatical 2026 🥏",
+  "short_name": "Sabbatical",
+  "description": "Disc golf road trip guide — schedule, courses, campsites, weather.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#11151f",
+  "theme_color": "#11151f",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='36' fill='%2311151f'/%3E%3Ctext x='96' y='130' font-size='104' text-anchor='middle'%3E%F0%9F%A5%8F%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
