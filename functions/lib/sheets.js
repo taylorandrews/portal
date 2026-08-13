@@ -1,7 +1,7 @@
 // Google Sheets append via a service account. Signs a JWT (RS256) with
 // WebCrypto — no external deps, runs on Cloudflare Workers. All pure helpers
 // are exported for unit tests; network calls live in appendBillRow().
-export const PAYMENTS_TAB = "Sheet1";       // default; override with env.SHEET_TAB (no redeploy)
+export const PAYMENTS_TAB = "Payments";     // first tab of "Missouri Utilities"; override with env.SHEET_TAB
 export const PAYMENTS_RANGE = `${PAYMENTS_TAB}!A:F`;
 const paymentsRange = (env) => `${env.SHEET_TAB || PAYMENTS_TAB}!A:F`;
 export const DEFAULT_PROVIDERS = {
