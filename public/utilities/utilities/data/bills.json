@@ -1,0 +1,401 @@
+[
+  {
+    "id": "seed-electric-0",
+    "utility": "Electric",
+    "start": "2025-06-11",
+    "end": "2025-06-25",
+    "amount": 144.17
+  },
+  {
+    "id": "seed-electric-1",
+    "utility": "Electric",
+    "start": "2025-06-26",
+    "end": "2025-07-27",
+    "amount": 315.47
+  },
+  {
+    "id": "seed-electric-2",
+    "utility": "Electric",
+    "start": "2025-07-28",
+    "end": "2025-08-25",
+    "amount": 205.62
+  },
+  {
+    "id": "seed-electric-3",
+    "utility": "Electric",
+    "start": "2025-08-26",
+    "end": "2025-09-24",
+    "amount": 129.07
+  },
+  {
+    "id": "seed-electric-4",
+    "utility": "Electric",
+    "start": "2025-09-25",
+    "end": "2025-10-23",
+    "amount": 92.28
+  },
+  {
+    "id": "seed-electric-5",
+    "utility": "Electric",
+    "start": "2025-10-24",
+    "end": "2025-11-24",
+    "amount": 85.89
+  },
+  {
+    "id": "seed-electric-6",
+    "utility": "Electric",
+    "start": "2025-11-25",
+    "end": "2025-12-28",
+    "amount": 137.55
+  },
+  {
+    "id": "seed-electric-7",
+    "utility": "Electric",
+    "start": "2025-12-29",
+    "end": "2026-01-27",
+    "amount": 163.26
+  },
+  {
+    "id": "seed-electric-8",
+    "utility": "Electric",
+    "start": "2026-01-28",
+    "end": "2026-02-26",
+    "amount": 120.81
+  },
+  {
+    "id": "seed-electric-9",
+    "utility": "Electric",
+    "start": "2026-02-27",
+    "end": "2026-03-29",
+    "amount": 143.44
+  },
+  {
+    "id": "seed-electric-10",
+    "utility": "Electric",
+    "start": "2026-03-30",
+    "end": "2026-04-27",
+    "amount": 93.87
+  },
+  {
+    "id": "seed-electric-11",
+    "utility": "Electric",
+    "start": "2026-04-28",
+    "end": "2026-05-27",
+    "amount": 101.2
+  },
+  {
+    "id": "seed-electric-12",
+    "utility": "Electric",
+    "start": "2026-05-28",
+    "end": "2026-06-25",
+    "amount": 158.34
+  },
+  {
+    "id": "seed-electric-13",
+    "utility": "Electric",
+    "start": "2026-06-26",
+    "end": "2026-07-27",
+    "amount": 287.17
+  },
+  {
+    "id": "seed-gas-0",
+    "utility": "Gas",
+    "start": "2025-05-23",
+    "end": "2025-07-17",
+    "amount": 101.09
+  },
+  {
+    "id": "seed-gas-1",
+    "utility": "Gas",
+    "start": "2025-07-18",
+    "end": "2025-08-15",
+    "amount": 43.14
+  },
+  {
+    "id": "seed-gas-2",
+    "utility": "Gas",
+    "start": "2025-08-16",
+    "end": "2025-09-15",
+    "amount": 42.99
+  },
+  {
+    "id": "seed-gas-3",
+    "utility": "Gas",
+    "start": "2025-09-16",
+    "end": "2025-10-16",
+    "amount": 40.73
+  },
+  {
+    "id": "seed-gas-4",
+    "utility": "Gas",
+    "start": "2025-10-17",
+    "end": "2025-11-14",
+    "amount": 179.16
+  },
+  {
+    "id": "seed-gas-5",
+    "utility": "Gas",
+    "start": "2025-11-15",
+    "end": "2025-12-16",
+    "amount": 395.39
+  },
+  {
+    "id": "seed-gas-6",
+    "utility": "Gas",
+    "start": "2025-12-17",
+    "end": "2026-01-16",
+    "amount": 252.28
+  },
+  {
+    "id": "seed-gas-7",
+    "utility": "Gas",
+    "start": "2026-01-17",
+    "end": "2026-02-16",
+    "amount": 436.23
+  },
+  {
+    "id": "seed-gas-8",
+    "utility": "Gas",
+    "start": "2026-02-17",
+    "end": "2026-03-16",
+    "amount": 172.24
+  },
+  {
+    "id": "seed-gas-9",
+    "utility": "Gas",
+    "start": "2026-03-17",
+    "end": "2026-04-16",
+    "amount": 114.21
+  },
+  {
+    "id": "seed-gas-10",
+    "utility": "Gas",
+    "start": "2026-04-17",
+    "end": "2026-05-15",
+    "amount": 56.12
+  },
+  {
+    "id": "seed-gas-11",
+    "utility": "Gas",
+    "start": "2026-05-16",
+    "end": "2026-06-16",
+    "amount": 44.72
+  },
+  {
+    "id": "seed-gas-12",
+    "utility": "Gas",
+    "start": "2026-06-17",
+    "end": "2026-07-17",
+    "amount": 43.37
+  },
+  {
+    "id": "seed-internet-0",
+    "utility": "Internet",
+    "start": "2025-05-15",
+    "end": "2025-06-14",
+    "amount": 101
+  },
+  {
+    "id": "seed-internet-1",
+    "utility": "Internet",
+    "start": "2025-06-15",
+    "end": "2025-07-14",
+    "amount": 101
+  },
+  {
+    "id": "seed-internet-2",
+    "utility": "Internet",
+    "start": "2025-07-15",
+    "end": "2025-08-14",
+    "amount": 101
+  },
+  {
+    "id": "seed-internet-3",
+    "utility": "Internet",
+    "start": "2025-08-15",
+    "end": "2025-09-14",
+    "amount": 101
+  },
+  {
+    "id": "seed-internet-4",
+    "utility": "Internet",
+    "start": "2025-09-15",
+    "end": "2025-10-14",
+    "amount": 101
+  },
+  {
+    "id": "seed-internet-5",
+    "utility": "Internet",
+    "start": "2025-10-15",
+    "end": "2025-11-06",
+    "amount": 80.8
+  },
+  {
+    "id": "seed-internet-6",
+    "utility": "Internet",
+    "start": "2025-11-06",
+    "end": "2025-12-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-7",
+    "utility": "Internet",
+    "start": "2025-12-06",
+    "end": "2026-01-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-8",
+    "utility": "Internet",
+    "start": "2026-01-06",
+    "end": "2026-02-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-9",
+    "utility": "Internet",
+    "start": "2026-02-06",
+    "end": "2026-03-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-10",
+    "utility": "Internet",
+    "start": "2026-03-06",
+    "end": "2026-04-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-11",
+    "utility": "Internet",
+    "start": "2026-04-06",
+    "end": "2026-05-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-12",
+    "utility": "Internet",
+    "start": "2026-05-06",
+    "end": "2026-06-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-13",
+    "utility": "Internet",
+    "start": "2026-06-06",
+    "end": "2026-07-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-14",
+    "utility": "Internet",
+    "start": "2026-07-06",
+    "end": "2026-08-05",
+    "amount": 76.16
+  },
+  {
+    "id": "seed-internet-15",
+    "utility": "Internet",
+    "start": "2026-08-06",
+    "end": "2026-09-05",
+    "amount": 78.35
+  },
+  {
+    "id": "seed-water-0",
+    "utility": "Water",
+    "start": "2025-06-11",
+    "end": "2025-06-23",
+    "amount": 20.46
+  },
+  {
+    "id": "seed-water-1",
+    "utility": "Water",
+    "start": "2025-06-24",
+    "end": "2025-07-23",
+    "amount": 51.16
+  },
+  {
+    "id": "seed-water-2",
+    "utility": "Water",
+    "start": "2025-07-24",
+    "end": "2025-08-22",
+    "amount": 51.16
+  },
+  {
+    "id": "seed-water-3",
+    "utility": "Water",
+    "start": "2025-08-23",
+    "end": "2025-09-22",
+    "amount": 52.87
+  },
+  {
+    "id": "seed-water-4",
+    "utility": "Water",
+    "start": "2025-09-23",
+    "end": "2025-10-22",
+    "amount": 51.16
+  },
+  {
+    "id": "seed-water-5",
+    "utility": "Water",
+    "start": "2025-10-23",
+    "end": "2025-11-22",
+    "amount": 51.16
+  },
+  {
+    "id": "seed-water-6",
+    "utility": "Water",
+    "start": "2025-11-23",
+    "end": "2025-12-22",
+    "amount": 52.87
+  },
+  {
+    "id": "seed-water-7",
+    "utility": "Water",
+    "start": "2025-12-23",
+    "end": "2026-01-22",
+    "amount": 52.87
+  },
+  {
+    "id": "seed-water-8",
+    "utility": "Water",
+    "start": "2026-01-23",
+    "end": "2026-02-21",
+    "amount": 54.32
+  },
+  {
+    "id": "seed-water-9",
+    "utility": "Water",
+    "start": "2026-02-22",
+    "end": "2026-03-21",
+    "amount": 51.16
+  },
+  {
+    "id": "seed-water-10",
+    "utility": "Water",
+    "start": "2026-03-22",
+    "end": "2026-04-22",
+    "amount": 51.16
+  },
+  {
+    "id": "seed-water-11",
+    "utility": "Water",
+    "start": "2026-04-23",
+    "end": "2026-05-23",
+    "amount": 55.11
+  },
+  {
+    "id": "seed-water-12",
+    "utility": "Water",
+    "start": "2026-05-24",
+    "end": "2026-06-23",
+    "amount": 55.88
+  },
+  {
+    "id": "seed-water-13",
+    "utility": "Water",
+    "start": "2026-06-24",
+    "end": "2026-07-24",
+    "amount": 54.07
+  }
+]

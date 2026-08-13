@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Utilities</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="tabs">
+    <button class="tab is-active" data-tab="summary">Summary</button>
+    <button class="tab" data-tab="chart">Chart</button>
+  </header>
+
+  <main>
+    <section id="tab-summary" class="panel is-active">
+      <div id="stats"></div>
+      <form id="entry" class="entry" autocomplete="off">
+        <h3>Add a bill</h3>
+        <label>Utility
+          <select id="f-utility" required>
+            <option value="" disabled selected>Choose…</option>
+            <option>Electric</option><option>Gas</option>
+            <option>Internet</option><option>Water</option>
+          </select>
+        </label>
+        <label>Start <input id="f-start" type="date" required></label>
+        <label>End <input id="f-end" type="date" required></label>
+        <label>Amount <input id="f-amount" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+        <button type="submit">Save bill</button>
+        <p id="entry-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="tab-chart" class="panel">
+      <div id="chart"></div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

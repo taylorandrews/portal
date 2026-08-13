@@ -1,0 +1,32 @@
+:root {
+  --bg: #0e1116; --panel: #151a21; --line: #232a33; --ink: #dfe6ee; --dim: #8b95a1;
+  --internet: #4f9dde; --water: #3fc4c4; --gas: #e8a13a; --electric: #e0574b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.4 -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.tabs { display: flex; gap: 4px; padding: 10px 12px; position: sticky; top: 0;
+  background: var(--bg); border-bottom: 1px solid var(--line); z-index: 10; }
+.tab { flex: 1; padding: 10px; border: 0; border-radius: 10px; background: transparent;
+  color: var(--dim); font-weight: 600; font-size: 15px; }
+.tab.is-active { background: var(--panel); color: var(--ink); }
+main { padding: 14px; max-width: 460px; margin: 0 auto; }
+.panel { display: none; } .panel.is-active { display: block; }
+.stat-card { background: var(--panel); border: 1px solid var(--line);
+  border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+.stat-card h3 { margin: 0 0 8px; font-size: 13px; color: var(--dim);
+  text-transform: uppercase; letter-spacing: .04em; }
+.runrate .big { font-size: 34px; font-weight: 700; }
+.runrate .sub { color: var(--dim); }
+.share-row { display: grid; grid-template-columns: 74px 1fr 64px; align-items: center;
+  gap: 8px; margin: 6px 0; font-size: 13px; }
+.share-bar { height: 10px; border-radius: 6px; }
+.entry { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.entry h3 { margin: 0 0 10px; }
+.entry label { display: block; margin: 10px 0; color: var(--dim); font-size: 13px; }
+.entry select, .entry input { width: 100%; margin-top: 4px; padding: 10px; font-size: 16px;
+  background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; }
+.entry button { width: 100%; margin-top: 14px; padding: 12px; border: 0; border-radius: 10px;
+  background: var(--internet); color: #06121d; font-weight: 700; font-size: 16px; }
+.status { min-height: 18px; margin: 10px 0 0; font-size: 13px; }
+.status.ok { color: #57c98a; } .status.warn { color: #e8a13a; } .status.err { color: var(--electric); }
