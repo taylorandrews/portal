@@ -1,8 +1,9 @@
 // Google Sheets append via a service account. Signs a JWT (RS256) with
 // WebCrypto — no external deps, runs on Cloudflare Workers. All pure helpers
 // are exported for unit tests; network calls live in appendBillRow().
-export const PAYMENTS_TAB = "Sheet1";       // confirmed at deploy; see plan Task 9
+export const PAYMENTS_TAB = "Sheet1";       // default; override with env.SHEET_TAB (no redeploy)
 export const PAYMENTS_RANGE = `${PAYMENTS_TAB}!A:F`;
+const paymentsRange = (env) => `${env.SHEET_TAB || PAYMENTS_TAB}!A:F`;
 export const DEFAULT_PROVIDERS = {
   Electric: { entity: "Evergy", account: "SW Credit" },
   Gas: { entity: "Spire", account: "SW Credit" },
@@ -73,14 +74,15 @@ export async function appendBillRow(env, bill) {
   const sa = loadSA(env);
   const token = await accessToken(sa);
   const base = `https://sheets.googleapis.com/v4/spreadsheets/${env.SHEET_ID}`;
+  const range = paymentsRange(env);
   const auth = { authorization: `Bearer ${token}` };
-  const getRes = await fetch(`${base}/values/${encodeURIComponent(PAYMENTS_RANGE)}`, { headers: auth });
+  const getRes = await fetch(`${base}/values/${encodeURIComponent(range)}`, { headers: auth });
   if (!getRes.ok) throw new Error(`values.get ${getRes.status}`);
   const rows = (await getRes.json()).values || [];
   const provider = carryProviderFields(rows.slice(1), bill.utility); // skip header
   const row = buildRow(bill, provider);
   const appendRes = await fetch(
-    `${base}/values/${encodeURIComponent(PAYMENTS_RANGE)}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+    `${base}/values/${encodeURIComponent(range)}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
     { method: "POST", headers: { ...auth, "content-type": "application/json" },
       body: JSON.stringify({ values: [row] }) });
   if (!appendRes.ok) throw new Error(`values.append ${appendRes.status}: ${(await appendRes.text()).slice(0, 200)}`);
