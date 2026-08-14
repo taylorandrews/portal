@@ -7,8 +7,7 @@
 ```json
 {
   "name": "100 Hole Day",
-  "icon": "⛳",
-  "group": "Golf",
+  "icon": "portal/icon.svg",
   "outputs": [
     { "title": "Live Tracker", "path": "output/index.html" },
     { "title": "Course Map", "path": "output/map.html", "icon": "🗺️" }
@@ -16,8 +15,14 @@
 }
 ```
 
-- `name` — project display name. `icon` — emoji (default) or relative image path.
-- `group` — section label on the landing page (defaults to "Other").
+- `name` — project display name.
+- `icon` — repo-relative path to a 64×64 SVG built from
+  `public/icons/projects/_template.svg` per `docs/project-icon-spec.md` (an emoji
+  still works as a fallback and renders on the plain tile).
+- `group` is ignored. The landing page is one flat grid in manifest order; every
+  project is a peer carrying its name as its label.
+- `angle` — optional gradient tilt in degrees. Omit it and the portal derives a
+  stable tilt from the slug, so a new project matches the set automatically.
 - `outputs[].path` — repo-relative path to the entry HTML. The **whole folder**
   containing it is copied, so keep each output self-contained with **relative**
   asset paths. The entry **must live in a dedicated subdirectory** (e.g.

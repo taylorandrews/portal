@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="World Cup 26">
+  
+  <defs><clipPath id="ball"><circle cx="32" cy="32" r="18"></circle></clipPath></defs>
+  <g fill="none" stroke="#968ae0" stroke-width="2.2" opacity=".45">
+    <path d="M32 0v64M16 16v32M0 16h16M0 48h16M48 16v32M64 16h-16M64 48h-16"></path>
+  </g>
+  <g transform="translate(32 32) scale(.5625) translate(-32 -32)">
+    <g clip-path="url(#ball)">
+      <path d="M32 32L32 12L13 22z" fill="#b5abfc"></path>
+      <path d="M32 32l19-8M32 32v22M32 32l-17 11" fill="none" stroke="#cfd3e5" stroke-width="3" stroke-linecap="round"></path>
+    </g>
+    <circle cx="32" cy="32" r="18" fill="none" stroke="#cfd3e5" stroke-width="3"></circle>
+  </g>
+</svg>

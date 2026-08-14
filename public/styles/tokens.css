@@ -1,34 +1,30 @@
 :root {
-  /* Accent — deep lilac from logo palette */
-  --accent: #5c4488;
-  --accent-press: #4a3672;
+  /* Ground and ink — one dark scheme, matching the app mark. */
+  --bg: #161826;
+  --surface: #1b1d2b;
+  --ink: #e9e9ed;
+  --ink-2: #cfd3e5;
+  --muted: #75798c;
+  --hairline: #3f424d;
 
-  /* Neutrals — purple-tinted to match logo */
-  --bg: #f6f4f8;
-  --surface: #ffffff;
-  --ink: #0c0714;
-  --ink-2: #6b6573;
-  --hairline: #e5e1ea;
+  /* Accent — used as a line and a glow, never a flood. */
+  --accent: #9184d9;
+  --accent-line: #968ae0;
+  --accent-press: #b5abfc;
 
-  /* Type — system stack */
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, system-ui, sans-serif;
+  /* Icon tile ground — lit corner to shadowed corner. */
+  --tile-lit: #35305a;
+  --tile-base: #1a1c29;
+  --tile-angle: 165deg;
+
+  /* Type */
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 
   /* Shape */
-  --radius-tile: 22px;
+  --radius-tile: 27px;
   --radius-card: 16px;
-  --shadow: 0 1px 3px rgba(12,7,20,.1), 0 8px 24px rgba(12,7,20,.08);
+  --shadow-tile: 0 8px 22px rgba(0,0,0,.55), 0 0 30px rgba(145,132,217,.19);
 
   /* Spacing scale */
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0c0714;
-    --surface: #161028;
-    --ink: #f0edf4;
-    --ink-2: #8a8490;
-    --hairline: #20183c;
-    --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.2);
-  }
 }

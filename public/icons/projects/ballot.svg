@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Ballot">
+  
+  <g fill="none" stroke="#968ae0" stroke-width="2.2" opacity=".45">
+    <path d="M-2 7h29M-2 17h51M-2 28h15M-2 37h39M-2 50h33" stroke-linecap="round"></path>
+  </g>
+  <g transform="translate(32 32) scale(.5625) translate(-32 -32)">
+    <path d="M20 14h15l9 9v23H20z" fill="none" stroke="#cfd3e5" stroke-width="3" stroke-linejoin="round"></path>
+    <path d="M35 14l9 9h-9z" fill="#b5abfc"></path>
+    <path d="M26 30l5 5 9-12" fill="none" stroke="#cfd3e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+</svg>

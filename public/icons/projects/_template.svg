@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="New project">
+  
+  <g fill="none" stroke="#968ae0" stroke-width="2.2" opacity=".45">
+    <path d="M-2 16h40M-2 32h24M-2 48h34" stroke-linecap="round"></path>
+  </g>
+  <g transform="translate(32 32) scale(.5625) translate(-32 -32)">
+    <path d="M16 46V22h32v24z" fill="none" stroke="#cfd3e5" stroke-width="3" stroke-linejoin="round"></path>
+    <path d="M32 14l8 8H24z" fill="#b5abfc"></path>
+  </g>
+</svg>
