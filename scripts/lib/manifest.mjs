@@ -20,6 +20,7 @@ export function buildManifest(projects) {
         slug: oSlug,
         title: o.title,
         icon: o.icon || pIcon,
+        ...(o.angle != null && { angle: o.angle }),
         href: `${pSlug}/${oSlug}/${entry}`,
       };
     });
@@ -27,6 +28,7 @@ export function buildManifest(projects) {
       slug: pSlug,
       name: p.config.name,
       icon: pIcon,
+      ...(p.config.angle != null && { angle: p.config.angle }),
       group: p.config.group || "Other",
       outputs,
     });

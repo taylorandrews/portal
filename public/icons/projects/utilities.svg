@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Utilities">
+  
+  <g fill="none" stroke="#968ae0" stroke-width="2.2" opacity=".45">
+    <path d="M13 -3c1 8-1 16 0 24s1 16 0 24s0 12 0 21" stroke-linecap="round"></path>
+    <path d="M31 -3c4 8-4 16 1 24s-3 16 2 24s-2 12 -1 21" stroke-linecap="round"></path>
+    <path d="M49 -3c8 8-10 16 2 24s-9 16 4 24s-7 12 -2 21" stroke-linecap="round"></path>
+  </g>
+  <g transform="translate(32 32) scale(.5625) translate(-32 -32)">
+    <path d="M13 44a19 19 0 0 1 38 0" fill="none" stroke="#cfd3e5" stroke-width="3" stroke-linecap="round"></path>
+    <path d="M30 44h4l11-18z" fill="#b5abfc"></path>
+    <circle cx="32" cy="44" r="3.5" fill="#cfd3e5"></circle>
+  </g>
+</svg>

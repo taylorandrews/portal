@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Sabbatical">
+  
+  <g fill="none" stroke="#968ae0" stroke-width="2.2" opacity=".45">
+    <path d="M-8 32a36 36 0 0 1 72 0a26 26 0 0 1-52 0a20 20 0 0 1 20-20" stroke-linecap="round"></path>
+  </g>
+  <g transform="translate(32 32) scale(.5625) translate(-32 -32)">
+    <path d="M11 46l15-22 8 12 11-15 8 25" fill="none" stroke="#cfd3e5" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"></path>
+    <path d="M45 21l3.4 10.5H37.6z" fill="#b5abfc"></path>
+  </g>
+</svg>
