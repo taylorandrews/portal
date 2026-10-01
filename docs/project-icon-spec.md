@@ -25,7 +25,7 @@ free to bleed past the edges (the tile clips it).
 - Loose and irregular beats a repeating pattern; no line should end next to an
   edge of the glyph, and none should sit tight against the bottom.
 - Existing motifs: ruled sheet lines (Ballot), one line orbiting inward a turn
-  and a quarter (Sabbatical), three vertical cost-over-time lines (Utilities),
+  and a quarter (Sabbatical),
   midfield line and two eighteen-yard boxes (World Cup 26).
 
 ### Layer 2 — the glyph (subject)
